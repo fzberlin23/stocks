@@ -18,14 +18,17 @@ class AlbumController extends AbstractActionController
 
     public function addAction()
     {
+
     }
 
     public function editAction()
     {
+
     }
 
     public function deleteAction()
     {
+		// delete action goes here
     }
 
 	public function getAlbumTable()
@@ -36,5 +39,5 @@ class AlbumController extends AbstractActionController
         }
         return $this->albumTable;
     }
-	
+
 }
