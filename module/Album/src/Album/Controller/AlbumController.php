@@ -14,7 +14,7 @@ class AlbumController extends AbstractActionController
 	public function indexAction()
     {
         return new ViewModel(array(
-            'albums' => $this->getAlbumTable()->fetchAll(),
+            'albums' => $this->getStockTable()->fetchAll(),
         ));
     }
 
@@ -31,7 +31,7 @@ class AlbumController extends AbstractActionController
 
             if ($form->isValid()) {
                 $album->exchangeArray($form->getData());
-                $this->getAlbumTable()->saveAlbum($album);
+                $this->getStockTable()->saveAlbum($album);
 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('album');
@@ -52,7 +52,7 @@ class AlbumController extends AbstractActionController
         // Get the Album with the specified id.  An exception is thrown
         // if it cannot be found, in which case go to the index page.
         try {
-            $album = $this->getAlbumTable()->getAlbum($id);
+            $album = $this->getStockTable()->getAlbum($id);
         }
         catch (\Exception $ex) {
             return $this->redirect()->toRoute('album', array(
@@ -70,7 +70,7 @@ class AlbumController extends AbstractActionController
             $form->setData($request->getPost());
 
             if ($form->isValid()) {
-                $this->getAlbumTable()->saveAlbum($form->getData());
+                $this->getStockTable()->saveAlbum($form->getData());
 
                 // Redirect to list of albums
                 return $this->redirect()->toRoute('album');
@@ -96,7 +96,7 @@ class AlbumController extends AbstractActionController
 
             if ($del == 'Yes') {
                 $id = (int) $request->getPost('id');
-                $this->getAlbumTable()->deleteAlbum($id);
+                $this->getStockTable()->deleteAlbum($id);
             }
 
             // Redirect to list of albums
@@ -105,11 +105,11 @@ class AlbumController extends AbstractActionController
 
         return array(
             'id'    => $id,
-            'album' => $this->getAlbumTable()->getAlbum($id)
+            'album' => $this->getStockTable()->getAlbum($id)
         );
     }
 
-	public function getAlbumTable()
+	public function getStockTable()
     {
         if (!$this->albumTable) {
             $sm = $this->getServiceLocator();

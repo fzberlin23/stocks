@@ -15,8 +15,8 @@ return array(
                 'options' => array(
                     'route'    => '/',
                     'defaults' => array(
-                        'controller' => 'Album\Controller\Album',
-                        'action'     => 'index',
+                        'controller' => 'Stock\Controller\Stock',
+                        'action'     => 'home',
                     ),
                 ),
             ),

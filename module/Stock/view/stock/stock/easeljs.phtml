@@ -1,0 +1,36 @@
+<canvas id="demoCanvas" width="600" height="400" style="border:1px solid black;">
+	Das ist ein Test.
+</canvas>
+
+<script src="/js/EaselJS-release_v0.6.0/lib/easeljs-0.6.0.min.js"></script>
+<script>
+	function init() {
+
+		// stage initialisieren
+		var stage = new createjs.Stage("demoCanvas");
+
+		// kreise zeichnen
+		var circle = new createjs.Shape();
+		circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+		circle.x = 100;
+		circle.y = 100;
+		stage.addChild(circle);
+
+		var secondCircle = new createjs.Shape();
+		secondCircle.graphics.beginFill("blue").drawCircle(0, 0, 50);
+		secondCircle.x = 150;
+		secondCircle.y = 150;
+		stage.addChild(secondCircle);
+
+		var thirdCircle = new createjs.Shape();
+		thirdCircle.graphics.beginFill("green").drawCircle(55, 50, 80);
+		thirdCircle.x = 210;
+		thirdCircle.y = 140;
+		stage.addChild(thirdCircle);
+
+		// stage aktualisieren
+		stage.update();
+	}
+
+	init();
+</script>
