@@ -6,7 +6,8 @@ return array(
 		'Album',
 		'Stock',
 		'DoctrineModule',
-		'DoctrineMongoODMModule'
+		'DoctrineMongoODMModule',
+		'ZendDeveloperTools'
     ),
 
     // These are various options for the listeners attached to the ModuleManager

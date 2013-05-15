@@ -1,3 +1,26 @@
-<h1>list of stocks</h1>
+<h1>the "stocks" collection (mongo db)</h1>
 
-<br/>
+<p>
+    <!--<a href="<?php echo $this->url('stock', array('action'=>'add'));?>">Add a new stock</a>-->
+	<a href="#">Add a new stock</a>
+</p>
+
+<table class="table">
+<tr>
+    <th>Name</th>
+    <th>Teacher</th>
+    <th>&nbsp;</th>
+</tr>
+<?php foreach ($stocks as $stock) : ?>
+
+<tr>
+    <td><?php echo $this->escapeHtml($stock->symbol);?></td>
+    <td>
+        <!--<a href="<?php echo $this->url('stock', array('action'=>'edit', 'id' => $stock->id));?>">Edit</a>
+        <a href="<?php echo $this->url('stock', array('action'=>'delete', 'id' => $stock->id));?>">Delete</a>-->
+		<a href="#">Edit</a>
+        <a href="#">Delete</a>
+    </td>
+</tr>
+<?php endforeach; ?>
+</table>

@@ -1,11 +1,6 @@
 <?php
 namespace Stock;
 
-use Stock\Model\Stock;
-use Stock\Model\StockTable;
-use Zend\Db\ResultSet\ResultSet;
-use Zend\Db\TableGateway\TableGateway;
-
 class Module
 {
 
@@ -27,24 +22,5 @@ class Module
     {
         return include __DIR__ . '/config/module.config.php';
     }
-
-//	public function getServiceConfig()
-//    {
-//        return array(
-//            'factories' => array(
-//                'Stock\Model\StockTable' =>  function($sm) {
-//                    $tableGateway = $sm->get('StockTableGateway');
-//                    $table = new StockTable($tableGateway);
-//                    return $table;
-//                },
-//                'StockTableGateway' => function ($sm) {
-//                    $dbAdapter = $sm->get('Zend\Db\Adapter\Adapter');
-//                    $resultSetPrototype = new ResultSet();
-//                    $resultSetPrototype->setArrayObjectPrototype(new Stock());
-//                    return new TableGateway('stock', $dbAdapter, null, $resultSetPrototype);
-//                },
-//            ),
-//        );
-//    }
 
 }

@@ -30,4 +30,5 @@ return array(
             'stock' => __DIR__ . '/../view',
         ),
     ),
+
 );

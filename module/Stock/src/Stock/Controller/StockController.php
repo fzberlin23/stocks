@@ -15,22 +15,20 @@ class StockController extends AbstractActionController
 
 	public function indexAction()
     {
-//        return new ViewModel(array(
-//            'stocks' => $this->getStockTable()->fetchAll(),
-//        ));
+
+		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+
+        $stocks = $dm->createQueryBuilder('Stock\Document\Stock')
+			->getQuery()
+			->execute();
+
+        return new ViewModel(array(
+           'stocks' => $stocks,
+        ));
     }
 
 	public function easeljsAction()
 	{
 	}
-
-	public function getStockTable()
-    {
-        if (!$this->stockTable) {
-            $sm = $this->getServiceLocator();
-            $this->stockTable = $sm->get('Stock\Model\AlbumTable');
-        }
-        return $this->stockTable;
-    }
 
 }
