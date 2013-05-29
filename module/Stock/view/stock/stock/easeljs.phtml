@@ -155,8 +155,10 @@
 	}
 
 	var stage;
-	var update = true;
+	var updateStageIfNecessaryVariable = true;
 	var shape1, shape2, shape3;
+	var container = new createjs.Container();
+	var initialScaling = 0;
 
 	function init() {
 
@@ -185,35 +187,58 @@
 
 			s.y = objectTop;
 
-			stage.addChild(s);
-
+			container.addChild(s);
 		}
+		container.x = 0;
+		container.y = 0;
 
-		// kreise zeichnen
-//		var circle = new createjs.Shape();
-//		circle.graphics.beginFill("red").drawCircle(0, 0, 50);
-//		circle.x = 100;
-//		circle.y = 100;
-//		circle.onPress = pressHandler;
-//		stage.addChild(circle);
+		stage.addChild(container);
+
+		// zeichne einen drag und drop fähigen kreis
+		var circle = new createjs.Shape();
+		circle.graphics.beginFill("red").drawCircle(0, 0, 5);
+		circle.x = 100;
+		circle.y = 10;
+		circle.onPress = pressHandler;
+		stage.addChild(circle);
+		createjs.Ticker.addEventListener("tick", updateStageIfNecessaryHandler);
 
 		// stage aktualisieren
 		stage.update();
-		createjs.Ticker.addListener(window);
+		createjs.Ticker.addEventListener("tick", initialScalingHandler);
 	}
 
 	function pressHandler(e) {
 		e.onMouseMove = function(ev) {
 			e.target.x = ev.stageX;
 			e.target.y = ev.stageY;
-			update = true;
+			updateStageIfNecessaryVariable = true;
 		}
 	}
 
-	function tick(){
-		if (update) {
-			update = false;
+	function updateStageIfNecessaryHandler() {
+		if (updateStageIfNecessaryVariable) {
+			updateStageIfNecessaryVariable = false;
 			stage.update();
+		}
+	}
+
+	function initialScalingHandler(){
+
+		initialScaling += 0.05;
+
+		if (initialScaling <= 1) {
+
+			for (var i=0; i<container.getNumChildren(); i++) {
+				container.getChildAt(i).scaleY = initialScaling;
+			}
+
+			// container.scaleX = container.scaleY = initialScaling;
+			
+			stage.update();
+		}
+		else {
+			createjs.Ticker.removeEventListener ('tick', initialScalingHandler);
 		}
 	}
 
