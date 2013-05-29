@@ -1,11 +1,187 @@
-<canvas id="demoCanvas" width="600" height="400" style="border:1px solid black;">
+<canvas id="demoCanvas" width="1000" height="500" style="border:1px solid black;">
 	Das ist ein Test.
 </canvas>
 
 <script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
 <script>
-	var stageWidth = 640;
-	var stageHeight = 480;
+
+
+
+	var prices = new Array();
+
+	prices[0] = new Object();
+	prices[0]['date'] = '2013-05-29';
+	prices[0]['open'] = 105.00;
+	prices[0]['high'] = 110.00;
+	prices[0]['low'] = 90.00;
+	prices[0]['close'] = 95.00;
+
+	prices[1] = new Object();
+	prices[1]['date'] = '2013-05-28';
+	prices[1]['open'] = 80.00;
+	prices[1]['high'] = 85.00;
+	prices[1]['low'] = 65.00;
+	prices[1]['close'] = 75.00;
+
+//	prices[2] = new Object();
+//	prices[2]['date'] = '2013-05-27';
+//	prices[2]['open'] = 120.00;
+//	prices[2]['high'] = 125.00;
+//	prices[2]['low'] = 65.00;
+//	prices[2]['close'] = 70.00;
+
+
+//	console.log(prices);
+
+
+	var stageWidth = 1000;
+	var stageHeight = 500;
+
+
+	var candleSlots = prices.length;
+	var highest;
+	var lowest;
+	var onePixelPrice;
+	var candleWidth;
+	var candleMargin = 10;
+
+	function calculateHighLowValues(prices) {
+
+		highest = null;
+		lowest = null;
+
+		console.log(prices);
+
+		for (var i=0; i<prices.length; i++) {
+			highest = highest === null || prices[i]['high'] > highest ? prices[i]['high'] : highest;
+			lowest = lowest === null || prices[i]['low'] < lowest ? prices[i]['low'] : lowest;
+		}
+
+//		highest = 120;
+//		lowest = 5;
+
+		var tmp = highest - lowest;
+		console.log('zu zeichnender kurs bereich: ' + tmp);
+		onePixelPrice = tmp / stageHeight;
+		console.log('onePixelPrice:' + onePixelPrice);
+
+		candleWidth = (stageWidth / candleSlots) - candleMargin;
+		candleWidth = Math.round(candleWidth);
+
+
+	}
+
+
+
+	function drawCandleToChart(candle, leftMulti) {
+
+
+		console.log(lowest);
+		console.log(highest);
+
+		console.log('open: ' + candle.open);
+		console.log('close: ' + candle.close);
+
+		var height = candle.open - candle.close;
+		console.log('height: ' + height);
+
+		var candleHeightInPixels = height / onePixelPrice;
+		console.log('heightInPixels: ' + candleHeightInPixels);
+
+
+		var right = stageWidth - candleMargin - ((leftMulti + 0) * (candleWidth + candleMargin));
+
+		var shadowTop = (Math.round((highest - candle.high) / onePixelPrice));
+		var shadowBottom = (Math.round((highest - candle.low) / onePixelPrice));
+
+		var bodyLeft = right - candleWidth;
+		var bodyRight = right;
+
+		var middle = bodyLeft + ((bodyRight-bodyLeft)/2);
+
+		if (candle.open == candle.close) {
+
+			/// ....
+		}
+		else {
+
+			if (candle.open > candle.close) {
+
+				console.log('open größer als close');
+
+				var lengthTopShadow = candle.high - candle.open;
+				var lenghtTopShadowInPixels = lengthTopShadow / onePixelPrice;
+				console.log('lengthTopShadow:' + lengthTopShadow);
+				console.log('lenghtTopShadowInPixels:' + lenghtTopShadowInPixels);
+
+				var lengthBottomShadow = candle.close - candle.low;
+				var lengthBottomShadowInPixels = lengthBottomShadow / onePixelPrice;
+				console.log('lengthBottomShadow:' + lengthBottomShadow);
+				console.log('lengthBottomShadowInPixels:' + lengthBottomShadowInPixels);
+
+
+
+				var bodyTop = (Math.round((highest - candle.open) / onePixelPrice));
+				var bodyBottom = (Math.round((highest - candle.close) / onePixelPrice));
+				var bodyColor = 'red';
+			}
+			else {
+				var bodyTop = (Math.round((highest - candle.close) / onePixelPrice));
+				var bodyBottom = (Math.round((highest - candle.open) / onePixelPrice));
+				var bodyColor = 'white';
+			}
+		}
+
+
+
+		var candleTop = 0;
+		var candleLeft = 0;
+
+		var g = new createjs.Graphics();
+		g.beginStroke(createjs.Graphics.getRGB(0,0,0));
+		g.setStrokeStyle(1);
+		g.beginFill(createjs.Graphics.getRGB(255,0,0));
+
+		g.moveTo(candleWidth / 2, 0);
+		g.lineTo(candleWidth / 2, lenghtTopShadowInPixels);
+
+		var candleTop = lenghtTopShadowInPixels;
+
+		g.drawRect(0, candleTop, candleWidth, candleHeightInPixels);
+
+		var candleBottom = lenghtTopShadowInPixels + candleHeightInPixels;
+		console.log(candleBottom);
+
+		g.moveTo(candleWidth / 2, candleBottom);
+		g.lineTo(candleWidth / 2, candleBottom + lengthBottomShadowInPixels);
+
+
+
+		console.log('high: ' + candle.high);
+		var diff = highest - candle.high;
+		var objectTop = diff / onePixelPrice;
+
+
+		var s = new createjs.Shape(g);
+		s.x = stageWidth - (candleWidth * (leftMulti + 1));
+		console.log(leftMulti);
+		console.log(s.x);
+		s.y = objectTop;
+
+
+
+		stage.addChild(s);
+	}
+
+
+
+
+
+
+
+
+
+
 	var stage;
 	var update = true;
 	var shape1, shape2, shape3;
@@ -17,34 +193,74 @@
 		stage.enableMouseOver();
 
 		// text
-		var text = new createjs.Text("Drag and drop the shapes", "30px Arial", "#000000");
-		text.x = stageWidth/2 - text.getMeasuredWidth()/2;
-		text.y = 80;
-		stage.addChild(text);
+//		var text = new createjs.Text("Drag and drop the shapes", "30px Arial", "#000000");
+//		text.x = stageWidth/2 - text.getMeasuredWidth()/2;
+//		text.y = 80;
+//		stage.addChild(text);
 
 		// kreise zeichnen
-		var circle = new createjs.Shape();
-		circle.graphics.beginFill("red").drawCircle(0, 0, 50);
-		circle.x = 100;
-		circle.y = 100;
-		circle.onPress = pressHandler;
-		stage.addChild(circle);
+//		var circle = new createjs.Shape();
+//		circle.graphics.beginFill("red").drawCircle(0, 0, 50);
+//		circle.x = 100;
+//		circle.y = 100;
+//		circle.onPress = pressHandler;
+//		stage.addChild(circle);
 
-		var secondCircle = new createjs.Shape();
-		secondCircle.graphics.beginFill("blue").drawCircle(0, 0, 50);
-		secondCircle.x = 150;
-		secondCircle.y = 150;
-		stage.addChild(secondCircle);
+//		var secondCircle = new createjs.Shape();
+//		secondCircle.graphics.beginFill("blue").drawCircle(0, 0, 50);
+//		secondCircle.x = 150;
+//		secondCircle.y = 150;
+//		stage.addChild(secondCircle);
 
-		var thirdCircle = new createjs.Shape();
-		thirdCircle.graphics.beginFill("green").drawCircle(55, 50, 80);
-		thirdCircle.x = 210;
-		thirdCircle.y = 140;
-		stage.addChild(thirdCircle);
+//		var thirdCircle = new createjs.Shape();
+//		thirdCircle.graphics.beginFill("green").drawCircle(55, 50, 80);
+//		thirdCircle.x = 210;
+//		thirdCircle.y = 140;
+//		stage.addChild(thirdCircle);
+
+//		stage.addChild(drawCandle());
+
+		calculateHighLowValues(prices);
+
+		for (var i=0; i<prices.length; i++) {
+			drawCandleToChart(prices[i], i);
+		}
 
 		// stage aktualisieren
 		stage.update();
 		createjs.Ticker.addListener(window);
+	}
+
+	function drawCandle() {
+
+		var g = new createjs.Graphics();
+		g.beginStroke(createjs.Graphics.getRGB(0,0,0));
+		g.setStrokeStyle(1);
+		g.beginFill(createjs.Graphics.getRGB(255,0,0));
+		g.drawRect(0, 0, 100, 100);
+		g.moveTo(50, 0);
+		g.lineTo(50, -50);
+		g.moveTo(50, 100);
+		g.lineTo(50, 150);
+
+		var s = new createjs.Shape(g);
+		s.x = 100;
+		s.y = 100;
+
+		return s;
+
+//		stage.addChild(s);
+//		stage.update();
+
+
+
+//		var thirdCircle = new createjs.Shape();
+//
+//		thirdCircle.graphics.beginFill("black").rect(50, 50, 100, 100);
+//
+//		thirdCircle.x = 210;
+//		thirdCircle.y = 140;
+//		return thirdCircle;
 	}
 
 	function pressHandler(e) {
