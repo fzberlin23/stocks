@@ -25,26 +25,18 @@ function createCandleStickContainer(prices) {
 	return candleStickContainer;
 }
 
-
-
 function calculateTopInPixelsFromPrice(price) {
 	return (highest - price) / onePixelPrice;
 }
 
-
 function priceLegend(candleStickContainer) {
 
-
-
 	var diff = highest - lowest;
-
 
 	if (diff >= 50 && diff <= 100) {
 
 		// draw a line every 10 euro
 		for (var i=lowest; i<=highest; i+=10) {
-
-
 
 			var g = new createjs.Graphics();
 			g.beginStroke(createjs.Graphics.getRGB(150,150,150));
@@ -68,7 +60,6 @@ function priceLegend(candleStickContainer) {
 	else {
 		alert('error in function priceLegend');
 	}
-
 }
 
 function createCandleGraphicsObject(candle, leftMulti) {
