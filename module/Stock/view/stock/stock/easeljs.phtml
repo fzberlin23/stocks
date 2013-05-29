@@ -4,16 +4,13 @@
 
 <script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
 <script>
-
-
-
 	var prices = new Array();
 
 	prices[0] = new Object();
 	prices[0]['date'] = '2013-05-29';
-	prices[0]['open'] = 105.00;
+	prices[0]['open'] = 75.00;
 	prices[0]['high'] = 110.00;
-	prices[0]['low'] = 90.00;
+	prices[0]['low'] = 60.00;
 	prices[0]['close'] = 95.00;
 
 	prices[1] = new Object();
@@ -23,20 +20,36 @@
 	prices[1]['low'] = 65.00;
 	prices[1]['close'] = 75.00;
 
-//	prices[2] = new Object();
-//	prices[2]['date'] = '2013-05-27';
-//	prices[2]['open'] = 120.00;
-//	prices[2]['high'] = 125.00;
-//	prices[2]['low'] = 65.00;
-//	prices[2]['close'] = 70.00;
+	prices[2] = new Object();
+	prices[2]['date'] = '2013-05-27';
+	prices[2]['open'] = 110.00;
+	prices[2]['high'] = 110.00;
+	prices[2]['low'] = 80.00;
+	prices[2]['close'] = 80.00;
 
+	prices[3] = new Object();
+	prices[3]['date'] = '2013-05-24';
+	prices[3]['open'] = 115.00;
+	prices[3]['high'] = 120.00;
+	prices[3]['low'] = 95.00;
+	prices[3]['close'] = 115.00;
 
-//	console.log(prices);
+	prices[4] = new Object();
+	prices[4]['date'] = '2013-05-24';
+	prices[4]['open'] = 90.00;
+	prices[4]['high'] = 120.00;
+	prices[4]['low'] = 75.00;
+	prices[4]['close'] = 110.00;
 
+	prices[5] = new Object();
+	prices[5]['date'] = '2013-05-23';
+	prices[5]['open'] = 80.00;
+	prices[5]['high'] = 95.00;
+	prices[5]['low'] = 65.00;
+	prices[5]['close'] = 90.00;
 
 	var stageWidth = 1000;
 	var stageHeight = 500;
-
 
 	var candleSlots = prices.length;
 	var highest;
@@ -50,44 +63,19 @@
 		highest = null;
 		lowest = null;
 
-		console.log(prices);
-
 		for (var i=0; i<prices.length; i++) {
 			highest = highest === null || prices[i]['high'] > highest ? prices[i]['high'] : highest;
 			lowest = lowest === null || prices[i]['low'] < lowest ? prices[i]['low'] : lowest;
 		}
 
-//		highest = 120;
-//		lowest = 5;
-
 		var tmp = highest - lowest;
-		console.log('zu zeichnender kurs bereich: ' + tmp);
 		onePixelPrice = tmp / stageHeight;
-		console.log('onePixelPrice:' + onePixelPrice);
 
-		candleWidth = (stageWidth / candleSlots) - candleMargin;
+		candleWidth = ((stageWidth - candleMargin) / candleSlots) - candleMargin;
 		candleWidth = Math.round(candleWidth);
-
-
 	}
 
-
-
 	function drawCandleToChart(candle, leftMulti) {
-
-
-		console.log(lowest);
-		console.log(highest);
-
-		console.log('open: ' + candle.open);
-		console.log('close: ' + candle.close);
-
-		var height = candle.open - candle.close;
-		console.log('height: ' + height);
-
-		var candleHeightInPixels = height / onePixelPrice;
-		console.log('heightInPixels: ' + candleHeightInPixels);
-
 
 		var right = stageWidth - candleMargin - ((leftMulti + 0) * (candleWidth + candleMargin));
 
@@ -101,38 +89,47 @@
 
 		if (candle.open == candle.close) {
 
-			/// ....
+			var height = candle.open - candle.close;
+			var candleHeightInPixels = 1;
+
+			var lengthTopShadow = candle.high - candle.open;
+			var lenghtTopShadowInPixels = lengthTopShadow / onePixelPrice;
+
+			var lengthBottomShadow = candle.close - candle.low;
+			var lengthBottomShadowInPixels = lengthBottomShadow / onePixelPrice;
+
 		}
 		else {
 
 			if (candle.open > candle.close) {
 
-				console.log('open größer als close');
+				var height = candle.open - candle.close;
+
+				var candleHeightInPixels = height / onePixelPrice;
 
 				var lengthTopShadow = candle.high - candle.open;
 				var lenghtTopShadowInPixels = lengthTopShadow / onePixelPrice;
-				console.log('lengthTopShadow:' + lengthTopShadow);
-				console.log('lenghtTopShadowInPixels:' + lenghtTopShadowInPixels);
 
 				var lengthBottomShadow = candle.close - candle.low;
 				var lengthBottomShadowInPixels = lengthBottomShadow / onePixelPrice;
-				console.log('lengthBottomShadow:' + lengthBottomShadow);
-				console.log('lengthBottomShadowInPixels:' + lengthBottomShadowInPixels);
 
-
-
-				var bodyTop = (Math.round((highest - candle.open) / onePixelPrice));
-				var bodyBottom = (Math.round((highest - candle.close) / onePixelPrice));
 				var bodyColor = 'red';
 			}
 			else {
-				var bodyTop = (Math.round((highest - candle.close) / onePixelPrice));
-				var bodyBottom = (Math.round((highest - candle.open) / onePixelPrice));
+
+				var height = candle.close - candle.open;
+
+				var candleHeightInPixels = height / onePixelPrice;
+
+				var lengthTopShadow = candle.high - candle.close;
+				var lenghtTopShadowInPixels = lengthTopShadow / onePixelPrice;
+
+				var lengthBottomShadow = candle.open - candle.low;
+				var lengthBottomShadowInPixels = lengthBottomShadow / onePixelPrice;
+
 				var bodyColor = 'white';
 			}
 		}
-
-
 
 		var candleTop = 0;
 		var candleLeft = 0;
@@ -140,7 +137,7 @@
 		var g = new createjs.Graphics();
 		g.beginStroke(createjs.Graphics.getRGB(0,0,0));
 		g.setStrokeStyle(1);
-		g.beginFill(createjs.Graphics.getRGB(255,0,0));
+		g.beginFill(bodyColor);
 
 		g.moveTo(candleWidth / 2, 0);
 		g.lineTo(candleWidth / 2, lenghtTopShadowInPixels);
@@ -150,38 +147,22 @@
 		g.drawRect(0, candleTop, candleWidth, candleHeightInPixels);
 
 		var candleBottom = lenghtTopShadowInPixels + candleHeightInPixels;
-		console.log(candleBottom);
 
 		g.moveTo(candleWidth / 2, candleBottom);
 		g.lineTo(candleWidth / 2, candleBottom + lengthBottomShadowInPixels);
 
-
-
-		console.log('high: ' + candle.high);
 		var diff = highest - candle.high;
 		var objectTop = diff / onePixelPrice;
 
-
 		var s = new createjs.Shape(g);
 		s.x = stageWidth - (candleWidth * (leftMulti + 1));
-		console.log(leftMulti);
-		console.log(s.x);
+		s.x = s.x - ((leftMulti + 1) * candleMargin);
+
 		s.y = objectTop;
-
-
 
 		stage.addChild(s);
 	}
-
-
-
-
-
-
-
-
-
-
+	
 	var stage;
 	var update = true;
 	var shape1, shape2, shape3;
