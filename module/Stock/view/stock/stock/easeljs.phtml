@@ -2,18 +2,32 @@
 	Das ist ein Test.
 </canvas>
 
-<script src="/js/EaselJS-release_v0.6.0/lib/easeljs-0.6.0.min.js"></script>
+<script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
 <script>
+	var stageWidth = 640;
+	var stageHeight = 480;
+	var stage;
+	var update = true;
+	var shape1, shape2, shape3;
+
 	function init() {
 
 		// stage initialisieren
-		var stage = new createjs.Stage("demoCanvas");
+		stage = new createjs.Stage("demoCanvas");
+		stage.enableMouseOver();
+
+		// text
+		var text = new createjs.Text("Drag and drop the shapes", "30px Arial", "#000000");
+		text.x = stageWidth/2 - text.getMeasuredWidth()/2;
+		text.y = 80;
+		stage.addChild(text);
 
 		// kreise zeichnen
 		var circle = new createjs.Shape();
 		circle.graphics.beginFill("red").drawCircle(0, 0, 50);
 		circle.x = 100;
 		circle.y = 100;
+		circle.onPress = pressHandler;
 		stage.addChild(circle);
 
 		var secondCircle = new createjs.Shape();
@@ -30,6 +44,22 @@
 
 		// stage aktualisieren
 		stage.update();
+		createjs.Ticker.addListener(window);
+	}
+
+	function pressHandler(e) {
+		e.onMouseMove = function(ev) {
+			e.target.x = ev.stageX;
+			e.target.y = ev.stageY;
+			update = true;
+		}
+	}
+
+	function tick(){
+		if (update) {
+			update = false;
+			stage.update();
+		}
 	}
 
 	init();
