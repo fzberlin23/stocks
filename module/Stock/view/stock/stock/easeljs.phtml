@@ -75,7 +75,7 @@
 		candleWidth = Math.round(candleWidth);
 	}
 
-	function drawCandleToChart(candle, leftMulti) {
+	function createCandleGraphicsObject(candle, leftMulti) {
 
 		var right = stageWidth - candleMargin - ((leftMulti + 0) * (candleWidth + candleMargin));
 
@@ -151,18 +151,9 @@
 		g.moveTo(candleWidth / 2, candleBottom);
 		g.lineTo(candleWidth / 2, candleBottom + lengthBottomShadowInPixels);
 
-		var diff = highest - candle.high;
-		var objectTop = diff / onePixelPrice;
-
-		var s = new createjs.Shape(g);
-		s.x = stageWidth - (candleWidth * (leftMulti + 1));
-		s.x = s.x - ((leftMulti + 1) * candleMargin);
-
-		s.y = objectTop;
-
-		stage.addChild(s);
+		return g;
 	}
-	
+
 	var stage;
 	var update = true;
 	var shape1, shape2, shape3;
@@ -174,10 +165,29 @@
 		stage.enableMouseOver();
 
 		// text
-//		var text = new createjs.Text("Drag and drop the shapes", "30px Arial", "#000000");
-//		text.x = stageWidth/2 - text.getMeasuredWidth()/2;
-//		text.y = 80;
-//		stage.addChild(text);
+		var text = new createjs.Text('ADS.de 080384', '13px Arial', '#000000');
+		text.x = 4;
+		text.y = 4;
+		stage.addChild(text);
+
+		calculateHighLowValues(prices);
+
+		for (var i=0; i<prices.length; i++) {
+
+			var obj = createCandleGraphicsObject(prices[i], i);
+
+			var s = new createjs.Shape(obj);
+			s.x = stageWidth - (candleWidth * (i + 1));
+			s.x = s.x - ((i + 1) * candleMargin);
+
+			var diff = highest - prices[i].high;
+			var objectTop = diff / onePixelPrice;
+
+			s.y = objectTop;
+
+			stage.addChild(s);
+
+		}
 
 		// kreise zeichnen
 //		var circle = new createjs.Shape();
@@ -187,61 +197,9 @@
 //		circle.onPress = pressHandler;
 //		stage.addChild(circle);
 
-//		var secondCircle = new createjs.Shape();
-//		secondCircle.graphics.beginFill("blue").drawCircle(0, 0, 50);
-//		secondCircle.x = 150;
-//		secondCircle.y = 150;
-//		stage.addChild(secondCircle);
-
-//		var thirdCircle = new createjs.Shape();
-//		thirdCircle.graphics.beginFill("green").drawCircle(55, 50, 80);
-//		thirdCircle.x = 210;
-//		thirdCircle.y = 140;
-//		stage.addChild(thirdCircle);
-
-//		stage.addChild(drawCandle());
-
-		calculateHighLowValues(prices);
-
-		for (var i=0; i<prices.length; i++) {
-			drawCandleToChart(prices[i], i);
-		}
-
 		// stage aktualisieren
 		stage.update();
 		createjs.Ticker.addListener(window);
-	}
-
-	function drawCandle() {
-
-		var g = new createjs.Graphics();
-		g.beginStroke(createjs.Graphics.getRGB(0,0,0));
-		g.setStrokeStyle(1);
-		g.beginFill(createjs.Graphics.getRGB(255,0,0));
-		g.drawRect(0, 0, 100, 100);
-		g.moveTo(50, 0);
-		g.lineTo(50, -50);
-		g.moveTo(50, 100);
-		g.lineTo(50, 150);
-
-		var s = new createjs.Shape(g);
-		s.x = 100;
-		s.y = 100;
-
-		return s;
-
-//		stage.addChild(s);
-//		stage.update();
-
-
-
-//		var thirdCircle = new createjs.Shape();
-//
-//		thirdCircle.graphics.beginFill("black").rect(50, 50, 100, 100);
-//
-//		thirdCircle.x = 210;
-//		thirdCircle.y = 140;
-//		return thirdCircle;
 	}
 
 	function pressHandler(e) {
