@@ -8,6 +8,7 @@ var candleWidth;
 var candleMargin = 10;
 
 var stage;
+var candleStickContainer;
 var initialScaling = 0;
 
 function init(prices) {
@@ -20,9 +21,9 @@ function init(prices) {
 	stageWidth = stage.canvas.width;
 	stageHeight = stage.canvas.height;
 
-	candleStickContainerWidth = stageWidth - 100;
+	candleStickContainerWidth = stageWidth - 200;
 	candleStickContainerHeight = stageHeight - 100;
-	candleStickContainerLeft = 50;
+	candleStickContainerLeft = 100;
 	candleStickContainerTop = 50;
 
 	// text einfügen

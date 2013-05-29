@@ -4,6 +4,8 @@ function createCandleStickContainer(prices) {
 
 	var candleStickContainer = new createjs.Container();
 
+	priceLegend(candleStickContainer);
+
 	for (var i=0; i<prices.length; i++) {
 
 		var obj = createCandleGraphicsObject(prices[i], i);
@@ -11,11 +13,7 @@ function createCandleStickContainer(prices) {
 		var s = new createjs.Shape(obj);
 		s.x = candleStickContainerWidth - (candleWidth * (i + 1));
 		s.x = s.x - ((i + 1) * candleMargin);
-
-		var diff = highest - prices[i].high;
-		var objectTop = diff / onePixelPrice;
-
-		s.y = objectTop;
+		s.y = calculateTopInPixelsFromPrice(prices[i].high);
 
 		candleStickContainer.addChild(s);
 	}
@@ -25,6 +23,52 @@ function createCandleStickContainer(prices) {
 	createjs.Ticker.addEventListener("tick", initialScalingHandler);
 
 	return candleStickContainer;
+}
+
+
+
+function calculateTopInPixelsFromPrice(price) {
+	return (highest - price) / onePixelPrice;
+}
+
+
+function priceLegend(candleStickContainer) {
+
+
+
+	var diff = highest - lowest;
+
+
+	if (diff >= 50 && diff <= 100) {
+
+		// draw a line every 10 euro
+		for (var i=lowest; i<=highest; i+=10) {
+
+
+
+			var g = new createjs.Graphics();
+			g.beginStroke(createjs.Graphics.getRGB(150,150,150));
+			g.setStrokeStyle(1);
+			g.moveTo(0, 0);
+			g.lineTo(candleStickContainerWidth, 0);
+
+			var s = new createjs.Shape(g);
+			s.x = 0;
+			s.y = calculateTopInPixelsFromPrice(i);
+
+			// text einfügen
+			var text = new createjs.Text(i + ',00 €', '14px Arial', '#000000');
+			text.x = -70;
+			text.y = calculateTopInPixelsFromPrice(i) - 5;
+			candleStickContainer.addChild(text);
+
+			candleStickContainer.addChild(s);
+		}
+	}
+	else {
+		alert('error in function priceLegend');
+	}
+
 }
 
 function createCandleGraphicsObject(candle, leftMulti) {
@@ -115,6 +159,16 @@ function calculateHighLowValues(prices) {
 		lowest = lowest === null || prices[i]['low'] < lowest ? prices[i]['low'] : lowest;
 	}
 
+	var diff = highest - lowest;
+	if (diff >= 10 && diff <= 100) {
+
+		highest = Math.ceil(highest / 10) * 10;
+		lowest = Math.floor(lowest / 10) * 10;
+	}
+	else {
+		alert('error in function calculateHighLowValues');
+	}
+
 	var tmp = highest - lowest;
 	onePixelPrice = tmp / candleStickContainerHeight;
 
@@ -137,6 +191,13 @@ function initialScalingHandler(){
 		stage.update();
 	}
 	else {
+
 		createjs.Ticker.removeEventListener ('tick', initialScalingHandler);
+
+		for (var i=0; i<candleStickContainer.getNumChildren(); i++) {
+			candleStickContainer.getChildAt(i).scaleY = 1;
+		}
+
+		stage.update();
 	}
 }
