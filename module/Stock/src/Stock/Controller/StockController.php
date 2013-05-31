@@ -31,6 +31,19 @@ class StockController extends AbstractActionController
 
 	public function easeljsAction()
 	{
+
+		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+
+		$prices = $dm->createQueryBuilder('Stock\Document\Price')
+			->select('date', 'open', 'high', 'low', 'close')
+			->limit(20)
+			->sort('date', 'desc')
+			->getQuery()
+			->execute();
+
+        return new ViewModel(array(
+           'prices' => $prices,
+        ));
 	}
 
 	public function getHistoricalPricesOfStockAction() {
@@ -51,7 +64,7 @@ class StockController extends AbstractActionController
 		// remove old prices
 		$qb = $dm->createQueryBuilder('Stock\Document\Price');
 		$qb->remove()
-			->field('stock')->equals($stock->getId())
+			->field('stock.id')->equals($stock->getId())
 			->getQuery()
 			->execute();
 
@@ -70,6 +83,10 @@ class StockController extends AbstractActionController
 			$price = new Price();
 			$price->setStock($stock);
 			$price->setDate($var['date']);
+			$price->setOpen($var['open']);
+			$price->setHigh($var['high']);
+			$price->setLow($var['low']);
+			$price->setClose($var['close']);
 			$dm->persist($price);
 		}
 

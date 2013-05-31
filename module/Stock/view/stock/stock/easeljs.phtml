@@ -9,7 +9,24 @@
 <script>
 	var prices = new Array();
 
-	prices[0] = new Object();
+	<?php
+		$k = 0;
+		while ($price = $prices->getNext()):
+	?>
+
+		prices[<?php echo $k; ?>] = new Object();
+		prices[<?php echo $k; ?>]['date'] = '<?php echo $price->getDate(); ?>';
+		prices[<?php echo $k; ?>]['open'] = <?php echo $price->getOpen(); ?>;
+		prices[<?php echo $k; ?>]['high'] = <?php echo $price->getHigh(); ?>;
+		prices[<?php echo $k; ?>]['low'] = <?php echo $price->getLow(); ?>;
+		prices[<?php echo $k; ?>]['close'] = <?php echo $price->getClose(); ?>;
+
+	<?php
+			$k++;
+		endwhile;
+	?>
+
+	/*prices[0] = new Object();
 	prices[0]['date'] = '2013-05-29';
 	prices[0]['open'] = 75.00;
 	prices[0]['high'] = 110.00;
@@ -49,7 +66,7 @@
 	prices[5]['open'] = 80.00;
 	prices[5]['high'] = 95.00;
 	prices[5]['low'] = 65.00;
-	prices[5]['close'] = 90.00;
+	prices[5]['close'] = 90.00;*/
 
 	init(prices);
 </script>

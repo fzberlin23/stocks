@@ -33,32 +33,40 @@ function priceLegend(candleStickContainer) {
 
 	var diff = highest - lowest;
 
+	var interval;
 	if (diff >= 50 && diff <= 100) {
-
-		// draw a line every 10 euro
-		for (var i=lowest; i<=highest; i+=10) {
-
-			var g = new createjs.Graphics();
-			g.beginStroke(createjs.Graphics.getRGB(150,150,150));
-			g.setStrokeStyle(1);
-			g.moveTo(0, 0);
-			g.lineTo(candleStickContainerWidth, 0);
-
-			var s = new createjs.Shape(g);
-			s.x = 0;
-			s.y = calculateTopInPixelsFromPrice(i);
-
-			// text einfügen
-			var text = new createjs.Text(i + ',00 €', '14px Arial', '#000000');
-			text.x = -70;
-			text.y = calculateTopInPixelsFromPrice(i) - 5;
-			candleStickContainer.addChild(text);
-
-			candleStickContainer.addChild(s);
-		}
+		interval = 10;
 	}
 	else {
-		alert('error in function priceLegend');
+
+		if (diff > 100 && diff <= 1000) {
+			interval = 100;
+		}
+		else {
+			alert('error in function priceLegend');
+		}
+	}
+
+	// draw a line every 10 euro
+	for (var i=lowest; i<=highest; i+=interval) {
+
+		var g = new createjs.Graphics();
+		g.beginStroke(createjs.Graphics.getRGB(150,150,150));
+		g.setStrokeStyle(1);
+		g.moveTo(0, 0);
+		g.lineTo(candleStickContainerWidth, 0);
+
+		var s = new createjs.Shape(g);
+		s.x = 0;
+		s.y = calculateTopInPixelsFromPrice(i);
+
+		// text einfügen
+		var text = new createjs.Text(i + ',00', '14px Arial', '#000000');
+		text.x = -70;
+		text.y = calculateTopInPixelsFromPrice(i) - 8;
+		candleStickContainer.addChild(text);
+
+		candleStickContainer.addChild(s);
 	}
 }
 
@@ -151,13 +159,22 @@ function calculateHighLowValues(prices) {
 	}
 
 	var diff = highest - lowest;
+
 	if (diff >= 10 && diff <= 100) {
 
 		highest = Math.ceil(highest / 10) * 10;
 		lowest = Math.floor(lowest / 10) * 10;
 	}
 	else {
-		alert('error in function calculateHighLowValues');
+
+		if (diff > 100 && diff <= 1000) {
+
+			highest = Math.ceil(highest / 100) * 100;
+			lowest = Math.floor(lowest / 100) * 100;
+		}
+		else {
+			alert('error in function calculateHighLowValues');
+		}
 	}
 
 	var tmp = highest - lowest;
