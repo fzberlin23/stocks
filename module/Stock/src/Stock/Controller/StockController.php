@@ -4,7 +4,9 @@ namespace Stock\Controller;
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
+use Stock\Document\Stock;
 use Stock\Document\Price;
+use Stock\Form\StockForm;
 
 class StockController extends AbstractActionController
 {
@@ -27,6 +29,34 @@ class StockController extends AbstractActionController
         return new ViewModel(array(
            'stocks' => $stocks,
         ));
+    }
+
+	public function addAction()
+    {
+        $form = new StockForm();
+        $form->get('submit')->setValue('Add');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+
+            $stock = new Stock();
+            $form->setInputFilter($stock->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+
+                $stock->exchangeArray($form->getData());
+
+				$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+				$dm->persist($stock);
+				$dm->flush();
+
+                // Redirect to list of albums
+                return $this->redirect()->toRoute('stock');
+            }
+        }
+
+        return array('form' => $form);
     }
 
 	public function easeljsAction()
