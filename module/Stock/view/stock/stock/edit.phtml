@@ -1,11 +1,18 @@
 <?php
-$title = 'Add new stock';
+$title = 'Edit stock';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
+
 <?php
 $form = $this->form;
-$form->setAttribute('action', $this->url('stock', array('action' => 'add')));
+$form->setAttribute('action', $this->url(
+    'stock',
+    array(
+        'action' => 'edit',
+        'id'     => $this->id,
+    )
+));
 $form->prepare();
 
 echo $this->form()->openTag($form);

@@ -35,6 +35,11 @@ class Stock
 		$this->symbol = (isset($data['symbol'])) ? $data['symbol'] : null;
 	}
 
+	public function getArrayCopy()
+	{
+		return get_object_vars($this);
+	}
+
 	public function getInputFilter()
 	{
 		if (!$this->inputFilter) {

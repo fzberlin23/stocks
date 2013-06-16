@@ -51,12 +51,58 @@ class StockController extends AbstractActionController
 				$dm->persist($stock);
 				$dm->flush();
 
-                // Redirect to list of albums
+                // Redirect to list of stocks
                 return $this->redirect()->toRoute('stock');
             }
         }
 
         return array('form' => $form);
+    }
+
+	public function editAction()
+    {
+        $id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('stock', array(
+                'action' => 'add'
+            ));
+        }
+
+        // Get the stock with the specified id.  An exception is thrown
+        // if it cannot be found, in which case go to the index page.
+        try {
+			$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+			$stock = $dm->find('Stock\Document\Stock', $id);
+        }
+        catch (\Exception $ex) {
+            return $this->redirect()->toRoute('stock', array(
+                'action' => 'index'
+            ));
+        }
+
+        $form  = new StockForm();
+        $form->bind($stock);
+        $form->get('submit')->setAttribute('value', 'Edit');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $form->setInputFilter($stock->getInputFilter());
+            $form->setData($request->getPost());
+
+            if ($form->isValid()) {
+				$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+				$dm->persist($form->getData());
+				$dm->flush();
+
+                // Redirect to list of stocks
+                return $this->redirect()->toRoute('stock');
+            }
+        }
+
+        return array(
+            'id' => $id,
+            'form' => $form,
+        );
     }
 
 	public function deleteAction()
@@ -80,7 +126,7 @@ class StockController extends AbstractActionController
 					->execute();
             }
 
-            // Redirect to list of albums
+            // Redirect to list of stocks
             return $this->redirect()->toRoute('stock');
         }
 
