@@ -170,17 +170,19 @@ class StockController extends AbstractActionController
 
 	public function getHistoricalPricesOfStockAction() {
 
-		// set max_execution_time
-		ini_set('max_execution_time', 0);
+		$id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('stock');
+        }
 
 		$symbol = '^GDAXI';
-		$startYear = '2003';
+		$startYear = '2007';
 
 		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
 
-		$stock = $dm->getRepository('Stock\Document\Stock')->findOneBy(array('symbol' => $symbol));
+		$stock = $dm->find('Stock\Document\Stock', $id);
 		if (is_null($stock)) {
-			die('Could not find stock with symbol ' . $symbol . ' in mongo db.');
+			die('Could not find stock with id ' . $id . ' in mongo db.');
 		}
 
 		// remove old prices
@@ -191,12 +193,17 @@ class StockController extends AbstractActionController
 			->execute();
 
 		$url =	'http://ichart.finance.yahoo.com/table.csv?' .
-				's='.$symbol.'&' .														// symbol
+				's='.$stock->getSymbol().'&' .											// symbol
 				'd='.(((int)date('m')) - 1).'&e='.date('d').'&f='.date('Y').'&g=d&' . 	// bis
 				'a=0&b=1&c=' . $startYear . '&' .										// von
 				'ignore=.csv';
 
-		$response = $this->getDataWithCurl($url);
+		try {
+			$response = $this->getDataWithCurl($url);
+		}
+		catch (\Exception $e) {
+			die('Beim Herunterladen der Kurse trat ein Fehler ('.$e->getMessage().') auf. Stimmt das Symbol der Aktie ('.$stock->getSymbol().')?');
+		}
 
 		$data = $this->parseHistoricalPrices($response);
 
@@ -214,7 +221,8 @@ class StockController extends AbstractActionController
 
 		$dm->flush();
 
-		die('done');
+		// Redirect to list of stocks
+		return $this->redirect()->toRoute('stock');
 	}
 
 	/**
@@ -257,7 +265,7 @@ class StockController extends AbstractActionController
 
 			// log status error
 			curl_close($ch);
-			throw new Exception('Unexpected status: ' . substr($output, 0, strpos($output, "\r")));
+			throw new \Exception('Unexpected status: ' . substr($output, 0, strpos($output, "\r")));
 		}
 
 		return trim(substr($output, strpos($output, "\r\n\r\n")));

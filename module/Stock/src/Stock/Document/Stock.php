@@ -29,6 +29,10 @@ class Stock
 		return $this->id;
 	}
 
+	public function getSymbol() {
+		return $this->symbol;
+	}
+
 	public function exchangeArray($data)
 	{
 		$this->id     = (isset($data['id'])) ? $data['id'] : null;
