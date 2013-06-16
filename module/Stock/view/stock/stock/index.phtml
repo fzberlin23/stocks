@@ -17,9 +17,9 @@
     <td><?php echo $this->escapeHtml($stock->symbol);?></td>
     <td>
         <!--<a href="<?php echo $this->url('stock', array('action'=>'edit', 'id' => $stock->id));?>">Edit</a>
-        <a href="<?php echo $this->url('stock', array('action'=>'delete', 'id' => $stock->id));?>">Delete</a>-->
+        -->
 		<a href="#">Edit</a>
-        <a href="#">Delete</a>
+        <a href="<?php echo $this->url('stock', array('action'=>'delete', 'id' => $stock->id));?>">Delete</a>
     </td>
 </tr>
 <?php endforeach; ?>

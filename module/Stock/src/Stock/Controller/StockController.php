@@ -59,6 +59,52 @@ class StockController extends AbstractActionController
         return array('form' => $form);
     }
 
+	public function deleteAction()
+    {
+        $id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('stock');
+        }
+
+		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+
+        $request = $this->getRequest();
+        if ($request->isPost()) {
+            $del = $request->getPost('del', 'No');
+            if ($del == 'Yes') {
+				$id = $request->getPost('id');
+				$qb = $dm->createQueryBuilder('Stock\Document\Stock');
+				$qb->remove()
+					->field('id')->equals($id)
+					->getQuery()
+					->execute();
+            }
+
+            // Redirect to list of albums
+            return $this->redirect()->toRoute('stock');
+        }
+
+		// works
+		// $stock = $dm->getRepository('Stock\Document\Stock')->findOneBy(array('id' => $id));
+
+		// works as well
+		// $stock = $dm->createQueryBuilder('Stock\Document\Stock')
+		//   ->field('id')->equals($id)
+		//   ->getQuery()
+		//   ->getSingleResult();
+
+		// works as well
+		// $stock = $dm->getRepository('Stock\Document\Stock')->findOneById($id);
+
+		// using this one because its the shortest way
+		$stock = $dm->find('Stock\Document\Stock', $id);
+
+        return array(
+            'id'    => $id,
+            'stock' => $stock
+        );
+    }
+
 	public function easeljsAction()
 	{
 
