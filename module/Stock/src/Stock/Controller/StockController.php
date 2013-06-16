@@ -153,19 +153,24 @@ class StockController extends AbstractActionController
 
 	public function easeljsAction()
 	{
+		$id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return $this->redirect()->toRoute('stock');
+        }
 
-//		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
-//
-//		$prices = $dm->createQueryBuilder('Stock\Document\Price')
-//			->select('date', 'open', 'high', 'low', 'close')
-//			->limit(20)
-//			->sort('date', 'desc')
-//			->getQuery()
-//			->execute();
-//
-//        return new ViewModel(array(
-//           'prices' => $prices,
-//        ));
+		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+
+		$prices = $dm->createQueryBuilder('Stock\Document\Price')
+			->select('date', 'open', 'high', 'low', 'close')
+			->field('stock.id')->equals($id)
+			->limit(20)
+			->sort('date', 'desc')
+			->getQuery()
+			->execute();
+
+        return new ViewModel(array(
+           'prices' => $prices,
+        ));
 	}
 
 	public function getHistoricalPricesOfStockAction() {
@@ -175,7 +180,6 @@ class StockController extends AbstractActionController
             return $this->redirect()->toRoute('stock');
         }
 
-		$symbol = '^GDAXI';
 		$startYear = '2007';
 
 		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');

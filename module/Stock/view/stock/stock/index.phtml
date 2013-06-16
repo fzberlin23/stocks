@@ -19,6 +19,7 @@
 		<a href="<?php echo $this->url('stock', array('action'=>'edit', 'id' => $stock->id));?>">Edit</a> |
 		<a href="http://de.finance.yahoo.com/q?s=<?php echo $stock->getSymbol(); ?>" target="_blank">View yahoo details</a> |
 		<a href="<?php echo $this->url('stock', array('action'=>'getHistoricalPricesOfStock', 'id' => $stock->id));?>">Get historical prices from yahoo</a> |
+		<a href="<?php echo $this->url('stock', array('action'=>'easeljs', 'id' => $stock->id));?>">Show chart</a> |
         <a href="<?php echo $this->url('stock', array('action'=>'delete', 'id' => $stock->id));?>">Delete</a>
     </td>
 </tr>

@@ -31,19 +31,31 @@ function calculateTopInPixelsFromPrice(price) {
 
 function priceLegend(candleStickContainer) {
 
+	var interval;
 	var diff = highest - lowest;
 
-	var interval;
-	if (diff >= 50 && diff <= 100) {
-		interval = 10;
+	if (diff > 1 && diff <= 20) {
+		interval = 1;
 	}
 	else {
 
-		if (diff > 100 && diff <= 1000) {
-			interval = 100;
+		if (diff > 20 && diff <= 50) {
+			interval = 5;
 		}
 		else {
-			alert('error in function priceLegend');
+
+			if (diff > 50 && diff <= 100) {
+				interval = 10;
+			}
+			else {
+
+				if (diff > 100 && diff <= 1000) {
+					interval = 100;
+				}
+				else {
+					alert('error in function priceLegend');
+				}
+			}
 		}
 	}
 
@@ -160,20 +172,28 @@ function calculateHighLowValues(prices) {
 
 	var diff = highest - lowest;
 
-	if (diff >= 10 && diff <= 100) {
+	if (diff >= 1 && diff < 10) {
 
-		highest = Math.ceil(highest / 10) * 10;
-		lowest = Math.floor(lowest / 10) * 10;
+		highest = Math.ceil(highest);
+		lowest = Math.floor(lowest);
 	}
 	else {
 
-		if (diff > 100 && diff <= 1000) {
+		if (diff >= 10 && diff <= 100) {
 
-			highest = Math.ceil(highest / 100) * 100;
-			lowest = Math.floor(lowest / 100) * 100;
+			highest = Math.ceil(highest / 10) * 10;
+			lowest = Math.floor(lowest / 10) * 10;
 		}
 		else {
-			alert('error in function calculateHighLowValues');
+
+			if (diff > 100 && diff <= 1000) {
+
+				highest = Math.ceil(highest / 100) * 100;
+				lowest = Math.floor(lowest / 100) * 100;
+			}
+			else {
+				alert('error in function calculateHighLowValues');
+			}
 		}
 	}
 
