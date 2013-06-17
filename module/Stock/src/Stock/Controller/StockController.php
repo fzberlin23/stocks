@@ -163,7 +163,7 @@ class StockController extends AbstractActionController
 		$prices = $dm->createQueryBuilder('Stock\Document\Price')
 			->select('date', 'open', 'high', 'low', 'close')
 			->field('stock.id')->equals($id)
-			->limit(20)
+			->limit(50)
 			->sort('date', 'desc')
 			->getQuery()
 			->execute();

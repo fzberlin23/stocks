@@ -18,8 +18,8 @@ function init(prices) {
 	// stage initialisieren
 	stage = new createjs.Stage("demoCanvas");
 
-	stageWidth = stage.canvas.width;
-	stageHeight = stage.canvas.height;
+	stageWidth = $("#demoCanvas").width();
+	stageHeight = $("#demoCanvas").height();
 
 	candleStickContainerWidth = stageWidth - 200;
 	candleStickContainerHeight = stageHeight - 100;
