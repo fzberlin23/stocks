@@ -168,8 +168,11 @@ class StockController extends AbstractActionController
 			->getQuery()
 			->execute();
 
+		$stock = $dm->find('Stock\Document\Stock', $id);
+
         return new ViewModel(array(
-           'prices' => $prices,
+			'prices' => $prices,
+			'stock' => $stock
         ));
 	}
 

@@ -11,7 +11,7 @@ var stage;
 var candleStickContainer;
 var initialScaling = 0;
 
-function init(prices) {
+function init(stock, prices) {
 
 	candleSlots = prices.length;
 
@@ -27,9 +27,9 @@ function init(prices) {
 	candleStickContainerTop = 50;
 
 	// text einfügen
-	var text = new createjs.Text('ADS.de 080384', '13px Arial', '#000000');
-	text.x = 4;
-	text.y = 4;
+	var text = new createjs.Text(stock.symbol, '13px Arial', '#000000');
+	text.x = 6;
+	text.y = 7;
 	stage.addChild(text);
 
 	// candlestickcontainer bauen und einfügen

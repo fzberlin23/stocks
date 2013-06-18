@@ -53,7 +53,14 @@ function priceLegend(candleStickContainer) {
 					interval = 100;
 				}
 				else {
-					alert('error in function priceLegend');
+
+					if (diff > 1000) {
+						interval = 200;
+					}
+					else {
+
+						alert('error in function priceLegend');
+					}
 				}
 			}
 		}
@@ -192,7 +199,16 @@ function calculateHighLowValues(prices) {
 				lowest = Math.floor(lowest / 100) * 100;
 			}
 			else {
-				alert('error in function calculateHighLowValues');
+
+				if (diff > 1000) {
+
+					highest = Math.ceil(highest / 1000) * 1000;
+					lowest = Math.floor(lowest / 1000) * 1000;
+				}
+				else {
+
+					alert('error in function calculateHighLowValues');
+				}
 			}
 		}
 	}
