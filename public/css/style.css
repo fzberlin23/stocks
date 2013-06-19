@@ -38,9 +38,14 @@ div.container a.brand {
     padding: 8px 20px 12px 40px;
 }
 
+h1 {
+	font-size: 30px;
+}
+
 #topNavigation {
 	background-color: #ddd;
 	padding: 10px;
+	text-align:center;
 }
 
 #fabianContainer {
