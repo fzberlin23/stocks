@@ -3,6 +3,16 @@ $title = 'Add new stock';
 $this->headTitle($title);
 ?>
 <h1><?php echo $this->escapeHtml($title); ?></h1>
+
+<p>Here you can add new stocks to the system. Examples for valid stock symbols are:</p>
+<ul>
+	<li>SAP.DE</li>
+	<li>RWE.DE</li>
+	<li>LHA.DE</li>
+	<li>BMW.DE</li>
+	<li>DTE.DE</li>
+</ul>
+
 <?php
 $form = $this->form;
 $form->setAttribute('action', $this->url('stock', array('action' => 'add')));
