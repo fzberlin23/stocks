@@ -17,6 +17,10 @@ class StockController extends AbstractActionController
 	{
 	}
 
+	public function githubAction()
+	{
+	}
+
 	public function indexAction()
     {
 
@@ -25,6 +29,15 @@ class StockController extends AbstractActionController
         $stocks = $dm->createQueryBuilder('Stock\Document\Stock')
 			->getQuery()
 			->execute();
+
+		foreach ($stocks as $stock) {
+
+			$stock->priceCount = $dm->createQueryBuilder('Stock\Document\Price')
+				->field('stock.id')->equals($stock->id)
+				->getQuery()
+				->execute()
+				->count();
+		}
 
         return new ViewModel(array(
            'stocks' => $stocks,
