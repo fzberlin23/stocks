@@ -3,6 +3,7 @@ namespace Stock\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
+use Zend\View\Model\JsonModel;
 
 use Stock\Document\Stock;
 use Stock\Document\Price;
@@ -320,6 +321,36 @@ class StockController extends AbstractActionController
 		}
 
 		return $finalData;
+	}
+
+	public function loadPricesAction()
+	{
+		$id = $this->params()->fromRoute('id', 0);
+        if (!$id) {
+            return new JsonModel(array(
+				'success' => false
+			));
+        }
+
+		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
+
+		$cursor = $dm->createQueryBuilder('Stock\Document\Price')
+			->select('date', 'open', 'high', 'low', 'close')
+			->field('stock.id')->equals($id)
+			->limit(50)
+			->sort('date', 'desc')
+			->getQuery()
+			->execute();
+
+		$result = array();
+		foreach ($cursor as $price) {
+			$result[] = $price;
+		}
+
+		return new JsonModel(array(
+			'success' => true,
+			'prices' => $result
+        ));
 	}
 
 }

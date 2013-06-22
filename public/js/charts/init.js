@@ -11,7 +11,19 @@ var stage;
 var candleStickContainer;
 var initialScaling = 0;
 
+function initMenu(data, textStatus, jqXHR) {
+	console.log('jo');
+}
+
 function init(stock, prices) {
+
+	$.ajax({
+        type: "GET",
+        crossDomain: false,
+        url: "/stock/loadPrices/" + stock.id,
+        dataType: "json",
+        success: initMenu
+    });
 
 	candleSlots = prices.length;
 

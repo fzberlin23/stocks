@@ -14,6 +14,7 @@
 
 <script>
 	var stock = new Object();
+	stock.id = '<?php echo $stock->getId(); ?>';
 	stock.symbol = '<?php echo $stock->getSymbol(); ?>';
 
 	var prices = new Array();
