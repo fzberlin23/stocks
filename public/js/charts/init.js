@@ -1,3 +1,5 @@
+var prices = new Array();
+
 var stageWidth;
 var stageHeight;
 
@@ -11,21 +13,7 @@ var stage;
 var candleStickContainer;
 var initialScaling = 0;
 
-function initMenu(data, textStatus, jqXHR) {
-	console.log('jo');
-}
-
-function init(stock, prices) {
-
-	$.ajax({
-        type: "GET",
-        crossDomain: false,
-        url: "/stock/loadPrices/" + stock.id,
-        dataType: "json",
-        success: initMenu
-    });
-
-	candleSlots = prices.length;
+function init() {
 
 	// stage initialisieren
 	stage = new createjs.Stage("demoCanvas");
@@ -44,10 +32,85 @@ function init(stock, prices) {
 	text.y = 7;
 	stage.addChild(text);
 
+	// button erstellen
+	sprite = new Image();
+    sprite.src = '/img/button.png';
+    sprite.onload = addButton;
+
+	loadPrices();
+}
+
+function loadPrices() {
+	$.ajax({
+        type: "GET",
+        crossDomain: false,
+        url: "/stock/loadPrices/" + stock.id,
+        dataType: "json",
+        success: drawPrices
+    });
+}
+
+function drawPrices(data, textStatus, jqXHR) {
+
+	prices = data.prices;
+
+	stage.removeChild(candleStickContainer);
+	stage.update();
+
 	// candlestickcontainer bauen und einfügen
 	candleStickContainer = createCandleStickContainer(prices);
 	stage.addChild(candleStickContainer);
 
 	// stage aktualisieren
 	stage.update();
+}
+
+function addButton() {
+
+	// create the spriteSheet
+	spriteSheet = new createjs.SpriteSheet({
+		images: [sprite],
+		frames: {width:178, height:105,numFrames : 3},
+		animations: {
+			normal:[0,0],
+			hover:[1,1],
+			pressed:[2,2]
+		}
+	});
+
+	button = new createjs.BitmapAnimation(spriteSheet);
+	button.x = 0;
+	button.y = 0;
+
+	// set default button state
+	button.gotoAndStop(0);
+
+	// add the button to the stage
+	stage.addChild(button);
+	stage.update();
+	stage.enableMouseOver(50);
+
+	button.onMouseOver = function()
+	{
+		this.gotoAndStop('hover');
+		stage.update();
+	}
+
+	button.onMouseOut = function()
+	{
+		this.gotoAndStop('normal');
+		this.getStage().update();
+	}
+
+	button.onPress = function()
+	{
+		this.gotoAndStop('pressed');
+		stage.update();
+	}
+
+	button.onClick = function() {
+		this.gotoAndStop('normal');
+		stage.update();
+		loadPrices();
+	};
 }

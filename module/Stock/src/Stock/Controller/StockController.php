@@ -174,18 +174,9 @@ class StockController extends AbstractActionController
 
 		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
 
-		$prices = $dm->createQueryBuilder('Stock\Document\Price')
-			->select('date', 'open', 'high', 'low', 'close')
-			->field('stock.id')->equals($id)
-			->limit(50)
-			->sort('date', 'desc')
-			->getQuery()
-			->execute();
-
 		$stock = $dm->find('Stock\Document\Stock', $id);
 
         return new ViewModel(array(
-			'prices' => $prices,
 			'stock' => $stock
         ));
 	}

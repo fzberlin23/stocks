@@ -1,5 +1,7 @@
 function createCandleStickContainer(prices) {
 
+	candleSlots = prices.length;
+
 	calculateHighLowValues(prices);
 
 	var candleStickContainer = new createjs.Container();
@@ -20,6 +22,7 @@ function createCandleStickContainer(prices) {
 	candleStickContainer.x = candleStickContainerLeft;
 	candleStickContainer.y = candleStickContainerTop;
 
+	initialScaling = 0;
 	createjs.Ticker.addEventListener("tick", initialScalingHandler);
 
 	return candleStickContainer;
@@ -236,7 +239,7 @@ function initialScalingHandler(){
 	}
 	else {
 
-		createjs.Ticker.removeEventListener ('tick', initialScalingHandler);
+		createjs.Ticker.removeEventListener('tick', initialScalingHandler);
 
 		for (var i=0; i<candleStickContainer.getNumChildren(); i++) {
 			candleStickContainer.getChildAt(i).scaleY = 1;
