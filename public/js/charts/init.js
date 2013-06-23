@@ -37,14 +37,14 @@ function init() {
     sprite.src = '/img/button.png';
     sprite.onload = addButton;
 
-	loadPrices();
+	loadPrices(1);
 }
 
-function loadPrices() {
+function loadPrices(months) {
 	$.ajax({
         type: "GET",
         crossDomain: false,
-        url: "/stock/loadPrices/" + stock.id,
+        url: "/stock/loadPrices/" + stock.id + "/" + months,
         dataType: "json",
         success: drawPrices
     });

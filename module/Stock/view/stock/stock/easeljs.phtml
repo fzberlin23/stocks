@@ -1,11 +1,28 @@
 <canvas id="demoCanvas">
 	Das ist ein Test.
 </canvas>
+
+<nav id="monthSelector">
+	<a href="#">1 month</a> |
+	<a href="#">2 months</a> |
+	<a href="#">3 months</a>
+</nav>
+
 <script>
 	// set size of canvas element
 	$("#fabianContainer").css('height', $("#fabianContainer").width() / 2);
 	$("#demoCanvas").attr('width', $("#fabianContainer").width());
 	$("#demoCanvas").attr('height', $("#fabianContainer").height());
+
+	$("#monthSelector a").click(function() {
+		var months = null;
+		switch ($(this).html()) {
+			case '1 month': months = 1; break;
+			case '2 months': months = 2; break;
+			case '3 months': months = 3; break;
+		}
+		loadPrices(months);
+	});
 </script>
 
 <script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
