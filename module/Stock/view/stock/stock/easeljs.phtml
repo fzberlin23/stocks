@@ -2,11 +2,19 @@
 	Das ist ein Test.
 </canvas>
 
+time period:
 <nav id="monthSelector">
 	<a href="#">1 month</a> |
 	<a href="#">2 months</a> |
 	<a href="#">3 months</a>
 </nav>
+
+<!--indicators:
+<nav id="monthSelector">
+	<a href="#">Simple moving average (10)</a> |
+	<a href="#">Simple moving average (20)</a> |
+	<a href="#">Simple moving average (30)</a>
+</nav>-->
 
 <script>
 	// set size of canvas element
@@ -15,6 +23,10 @@
 	$("#demoCanvas").attr('height', $("#fabianContainer").height());
 
 	$("#monthSelector a").click(function() {
+
+		$(this).parent().children().css('color', '');
+		$(this).css('color', 'red');
+
 		var months = null;
 		switch ($(this).html()) {
 			case '1 month': months = 1; break;
