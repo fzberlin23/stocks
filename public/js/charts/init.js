@@ -13,6 +13,8 @@ var stage;
 var candleStickContainer;
 var initialScaling = 0;
 
+var days = 20;
+
 function init() {
 
 	// stage initialisieren
@@ -37,14 +39,15 @@ function init() {
     // sprite.src = '/img/button.png';
     // sprite.onload = addButton;
 
-	loadPrices(1);
+	loadPrices(20);
 }
 
-function loadPrices(months) {
+function loadPrices(daysToGet) {
+	days = daysToGet;
 	$.ajax({
         type: "GET",
         crossDomain: false,
-        url: "/stock/loadPrices/" + stock.id + "/" + months,
+        url: "/stock/loadPrices/" + stock.id + "/" + days,
         dataType: "json",
         success: drawPrices
     });
@@ -58,9 +61,37 @@ function drawPrices(data, textStatus, jqXHR) {
 	stage.update();
 
 	// candlestickcontainer bauen und einfügen
-	candleStickContainer = createCandleStickContainer(prices);
+	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
 	stage.addChild(candleStickContainer);
 
 	// stage aktualisieren
 	stage.update();
+
+	var movingAverageData = calculateMovingAverage(30);
+	console.log(movingAverageData);
+	console.log(movingAverageData.length);
+}
+
+function calculateMovingAverage(movingAveragePeriod) {
+
+	// generate moving average of each price
+	var movingAverage = new Array();
+
+	for (var i=0; i<prices.length; i++) {
+
+		if (prices.length - i < movingAveragePeriod) {
+			break;
+		}
+
+		var tmp = 0.00;
+		for (j = i; j < i + movingAveragePeriod; j++) {
+			tmp += prices[j]['close'];
+		}
+
+		movingAverage[i] = new Object();
+		movingAverage[i]['date'] = prices[i]['date'];
+		movingAverage[i]['value'] = Math.round(tmp / movingAveragePeriod * 100) / 100;
+	}
+
+	return movingAverage;
 }

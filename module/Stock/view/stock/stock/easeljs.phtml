@@ -27,13 +27,13 @@ time period:
 		$(this).parent().children().css('color', '');
 		$(this).css('color', 'red');
 
-		var months = null;
+		var days = null;
 		switch ($(this).html()) {
-			case '1 month': months = 1; break;
-			case '2 months': months = 2; break;
-			case '3 months': months = 3; break;
+			case '1 month': days = 20; break;
+			case '2 months': days = 40; break;
+			case '3 months': days = 60; break;
 		}
-		loadPrices(months);
+		loadPrices(days);
 	});
 </script>
 

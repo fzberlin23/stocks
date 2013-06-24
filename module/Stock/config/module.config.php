@@ -11,11 +11,11 @@ return array(
             'stock' => array(
                 'type'    => 'segment',
                 'options' => array(
-                    'route'    => '/stock[/][:action][/:id][/:months]',
+                    'route'    => '/stock[/][:action][/:id][/:days]',
                     'constraints' => array(
                         'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                         'id'     => '[a-z0-9]+',
-						'months' => '[0-9]+',
+						'days'	 => '[0-9]+',
                     ),
                     'defaults' => array(
                         'controller' => 'Stock\Controller\Stock',

@@ -323,26 +323,19 @@ class StockController extends AbstractActionController
 			));
         }
 
-		$months = $this->params()->fromRoute('months', 0);
-        if (!$months) {
+		$days = $this->params()->fromRoute('days', 0);
+        if (!$days) {
             return new JsonModel(array(
 				'success' => false
 			));
         }
-
-		$recordsToGet = null;
-		switch ($months) {
-			case 1: $recordsToGet = 20; break;
-			case 2: $recordsToGet = 40; break;
-			case 3: $recordsToGet = 60; break;
-		}
 
 		$dm = $this->getServiceLocator()->get('doctrine.documentmanager.odm_default');
 
 		$cursor = $dm->createQueryBuilder('Stock\Document\Price')
 			->select('date', 'open', 'high', 'low', 'close')
 			->field('stock.id')->equals($id)
-			->limit($recordsToGet)
+			->limit($days + 30 - 1)
 			->sort('date', 'desc')
 			->getQuery()
 			->execute();
