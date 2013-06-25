@@ -15,6 +15,8 @@ var initialScaling = 0;
 
 var days = 20;
 
+var movingAverageContainers = new Array();
+
 function init() {
 
 	// stage initialisieren
@@ -64,12 +66,57 @@ function drawPrices(data, textStatus, jqXHR) {
 	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
 	stage.addChild(candleStickContainer);
 
+	var movingAverageData = calculateMovingAverage(10);
+
+	if (movingAverageContainers.length > 0) {
+		stage.removeChild(movingAverageContainers[0]);
+	}
+
+	movingAverageContainers[0] = drawMovingAverage(movingAverageData);
+	stage.addChild(movingAverageContainers[0]);
+
 	// stage aktualisieren
 	stage.update();
+}
 
-	var movingAverageData = calculateMovingAverage(30);
-	console.log(movingAverageData);
-	console.log(movingAverageData.length);
+function drawMovingAverage(movingAverageData) {
+
+	// calculate coordinates
+	var coordinates = new Array();
+	for (var i=0; i<days; i++) {
+		coordinates[i] = new Object();
+		coordinates[i]['x'] = candleStickContainerWidth - (candleWidth * (i + 1)) + (candleWidth / 2);
+		coordinates[i]['x'] = coordinates[i]['x'] - ((i + 1) * candleMargin);
+		coordinates[i]['y'] = calculateTopInPixelsFromPrice(movingAverageData[i].value);
+	}
+
+	var movingAverageContainer = new createjs.Container();
+
+	for (var i=0; i<days; i++) {
+
+		var g = new createjs.Graphics();
+		g.setStrokeStyle(1);
+		g.beginStroke(createjs.Graphics.getRGB(0,0,0));
+		g.beginFill(createjs.Graphics.getRGB(0,0,200));
+		g.drawCircle(0,0,2);
+
+		// create shape
+		var s = new createjs.Shape(g);
+		s.x = coordinates[i]['x'];
+		s.y = coordinates[i]['y'];
+
+		//candleStickContainer.addChild(s);
+		movingAverageContainer.addChild(s);
+	}
+
+	movingAverageContainer.x = candleStickContainerLeft;
+	movingAverageContainer.y = candleStickContainerTop;
+
+	return movingAverageContainer;
+
+	//	g.moveTo(0, 0);
+	//	g.lineTo(100, 100);
+	//	g.bezierCurveTo (0, 50, 50, 50, 100, 100);
 }
 
 function calculateMovingAverage(movingAveragePeriod) {

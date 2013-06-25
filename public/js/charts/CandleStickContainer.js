@@ -19,6 +19,7 @@ function createCandleStickContainer(prices) {
 
 		candleStickContainer.addChild(s);
 	}
+
 	candleStickContainer.x = candleStickContainerLeft;
 	candleStickContainer.y = candleStickContainerTop;
 
