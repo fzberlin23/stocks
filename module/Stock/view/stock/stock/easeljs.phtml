@@ -4,7 +4,7 @@
 
 time period:
 <nav id="monthSelector">
-	<a href="#">1 month</a> |
+	<a href="#" class="activated">1 month</a> |
 	<a href="#">2 months</a> |
 	<a href="#">3 months</a>
 </nav>
@@ -24,8 +24,8 @@ indicators:
 
 	$("#monthSelector a").click(function() {
 
-		$(this).parent().children().css('color', '');
-		$(this).css('color', 'red');
+		$(this).parent().children().removeClass('activated');
+		$(this).addClass('activated');
 
 		var days = null;
 		switch ($(this).html()) {

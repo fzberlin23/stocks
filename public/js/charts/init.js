@@ -59,27 +59,27 @@ function drawPrices(data, textStatus, jqXHR) {
 
 	prices = data.prices;
 
+	// remove old stuff
 	stage.removeChild(candleStickContainer);
+	for (i=0; i<movingAverageContainers.length; i++) {
+		if (typeof movingAverageContainers[i] !== 'undefined') {
+			stage.removeChild(movingAverageContainers[i]);
+		}
+	}
 	stage.update();
 
-	// candlestickcontainer bauen und einfügen
+	// add candlestickcontainer
 	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
 	stage.addChild(candleStickContainer);
 
 	// redraw moving averages if necessary
 	for (i=0; i<movingAverageContainers.length; i++) {
-
 		if (typeof movingAverageContainers[i] !== 'undefined') {
-
-			stage.removeChild(movingAverageContainers[i]);
 			var movingAverageData = calculateMovingAverage(i);
 			movingAverageContainers[i] = drawMovingAverage(i, movingAverageData);
 			stage.addChild(movingAverageContainers[i]);
 		}
 	}
-
-	// stage aktualisieren
-	stage.update();
 }
 
 function drawMovingAverage(period, movingAverageData) {
