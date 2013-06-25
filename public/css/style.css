@@ -61,6 +61,10 @@ h1 {
 	border: 1px solid black;
 }
 
+.activated {
+	color: red;
+}
+
 /* Desktop large
 ------------------------- */
 @media (min-width: 1200px) {

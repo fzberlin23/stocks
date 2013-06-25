@@ -9,12 +9,12 @@ time period:
 	<a href="#">3 months</a>
 </nav>
 
-<!--indicators:
-<nav id="monthSelector">
+indicators:
+<nav id="smaSelector">
 	<a href="#">Simple moving average (10)</a> |
 	<a href="#">Simple moving average (20)</a> |
 	<a href="#">Simple moving average (30)</a>
-</nav>-->
+</nav>
 
 <script>
 	// set size of canvas element
@@ -34,6 +34,28 @@ time period:
 			case '3 months': days = 60; break;
 		}
 		loadPrices(days);
+	});
+
+	$("#smaSelector a").click(function() {
+
+		var sma = null;
+		switch ($(this).html()) {
+			case 'Simple moving average (10)': sma = 10; break;
+			case 'Simple moving average (20)': sma = 20; break;
+			case 'Simple moving average (30)': sma = 30; break;
+		}
+
+		if ($(this).hasClass('activated')) {
+			$(this).removeClass('activated');
+			stage.removeChild(movingAverageContainers[sma]);
+		}
+		else {
+			$(this).addClass('activated');
+			var movingAverageData = calculateMovingAverage(sma);
+			movingAverageContainers[sma] = drawMovingAverage(movingAverageData);
+			stage.addChild(movingAverageContainers[sma]);
+		}
+		stage.update();
 	});
 </script>
 

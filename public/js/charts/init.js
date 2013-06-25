@@ -66,15 +66,6 @@ function drawPrices(data, textStatus, jqXHR) {
 	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
 	stage.addChild(candleStickContainer);
 
-	var movingAverageData = calculateMovingAverage(10);
-
-	if (movingAverageContainers.length > 0) {
-		stage.removeChild(movingAverageContainers[0]);
-	}
-
-	movingAverageContainers[0] = drawMovingAverage(movingAverageData);
-	stage.addChild(movingAverageContainers[0]);
-
 	// stage aktualisieren
 	stage.update();
 }
