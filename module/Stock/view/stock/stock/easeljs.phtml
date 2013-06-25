@@ -48,11 +48,12 @@ indicators:
 		if ($(this).hasClass('activated')) {
 			$(this).removeClass('activated');
 			stage.removeChild(movingAverageContainers[sma]);
+			delete movingAverageContainers[sma];
 		}
 		else {
 			$(this).addClass('activated');
 			var movingAverageData = calculateMovingAverage(sma);
-			movingAverageContainers[sma] = drawMovingAverage(movingAverageData);
+			movingAverageContainers[sma] = drawMovingAverage(sma, movingAverageData);
 			stage.addChild(movingAverageContainers[sma]);
 		}
 		stage.update();

@@ -66,11 +66,30 @@ function drawPrices(data, textStatus, jqXHR) {
 	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
 	stage.addChild(candleStickContainer);
 
+	// redraw moving averages if necessary
+	for (i=0; i<movingAverageContainers.length; i++) {
+
+		if (typeof movingAverageContainers[i] !== 'undefined') {
+
+			stage.removeChild(movingAverageContainers[i]);
+			var movingAverageData = calculateMovingAverage(i);
+			movingAverageContainers[i] = drawMovingAverage(i, movingAverageData);
+			stage.addChild(movingAverageContainers[i]);
+		}
+	}
+
 	// stage aktualisieren
 	stage.update();
 }
 
-function drawMovingAverage(movingAverageData) {
+function drawMovingAverage(period, movingAverageData) {
+
+	var color = null;
+	switch (period) {
+		case 10: color = createjs.Graphics.getRGB(0,0,200); break;
+		case 20: color = createjs.Graphics.getRGB(51,153,0); break;
+		case 30: color = createjs.Graphics.getRGB(255,153,0); break;
+	}
 
 	// calculate coordinates
 	var coordinates = new Array();
@@ -87,8 +106,8 @@ function drawMovingAverage(movingAverageData) {
 
 		var g = new createjs.Graphics();
 		g.setStrokeStyle(1);
-		g.beginStroke(createjs.Graphics.getRGB(0,0,0));
-		g.beginFill(createjs.Graphics.getRGB(0,0,200));
+		g.beginStroke(color);
+		g.beginFill(color);
 		g.drawCircle(0,0,2);
 
 		// create shape
