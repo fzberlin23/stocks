@@ -131,7 +131,7 @@ class StockController extends AbstractActionController
         $request = $this->getRequest();
         if ($request->isPost()) {
             $del = $request->getPost('del', 'No');
-            if ($del == 'Yes') {
+            if ($del == 'Ja') {
 				$id = $request->getPost('id');
 				$qb = $dm->createQueryBuilder('Stock\Document\Stock');
 				$qb->remove()

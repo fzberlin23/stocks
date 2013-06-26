@@ -1,15 +1,24 @@
+<h1>Chart für: <?php echo $stock->getSymbol(); ?></h1>
+
+<p>
+	Hier wird der Chart für <?php echo $stock->getSymbol(); ?> dargestellt.<br/>
+	Verwendet wird hier die JS-Bibliothek EaselJS.<br/>
+	3 Verschiedene Zeiträume und 3 Varianten des Simple Moving Average (SMA) können angezeigt werden.
+</p>
+
 <canvas id="chartCanvas">
-	Das ist ein Test.
+	Sollte der Chart bei Ihnen nicht erscheinen, so wird dies von Ihrem Browser nicht unterstützt.
+	Bitte benutzen Sie einen aktuelleren Browser.
 </canvas>
 
-time period:
+Zeitraum:
 <nav id="monthSelector">
 	<a href="#" class="activated">1 month</a> |
 	<a href="#">2 months</a> |
 	<a href="#">3 months</a>
 </nav>
 
-indicators:
+Indikatoren:
 <nav id="smaSelector">
 	<a href="#">Simple moving average (10)</a> |
 	<a href="#">Simple moving average (20)</a> |

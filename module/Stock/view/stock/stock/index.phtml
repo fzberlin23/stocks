@@ -1,26 +1,33 @@
-<h1>the "stocks" collection (mongo db)</h1>
+<h1>Aktien (mongodb)</h1>
 
 <p>
-    <!--<a href="<?php echo $this->url('stock', array('action'=>'add'));?>">Add a new stock</a>-->
-	<a href="/stock/add">Add a new stock</a>
+	Hier kann man die Aktien verwalten, die man in einem Chart anzeigen möchte.<br/>
+	Zuerst legt man die Aktie an (anhand des Wertpapier-Symbols) und lädt dann die Aktienkurse
+	von Yahoo herunter.<br/>
+	Ist dies geschehen, so kann man den Chart anzeigen lassen.<br/>
+	Natürlich kann man Aktien auch editieren und löschen.
+</p>
+
+<p>
+	<a href="/stock/add">Neue Aktie hinzufügen</a>
 </p>
 
 <table class="table">
 <tr>
     <th>Symbol</th>
-    <th>Action</th>
+    <th>Aktion</th>
     <th>&nbsp;</th>
 </tr>
 <?php foreach ($stocks as $stock) : ?>
 
 <tr>
-    <td><?php echo $this->escapeHtml($stock->symbol);?> (<?php echo $this->escapeHtml($stock->priceCount);?> prices)</td>
+    <td><?php echo $this->escapeHtml($stock->symbol);?> (<?php echo $this->escapeHtml($stock->priceCount);?> Kurse)</td>
     <td>
-		<a href="<?php echo $this->url('stock', array('action'=>'edit', 'id' => $stock->id));?>">Edit</a> |
-		<a href="http://de.finance.yahoo.com/q?s=<?php echo $stock->getSymbol(); ?>" target="_blank">View yahoo details</a> |
-		<a href="<?php echo $this->url('stock', array('action'=>'getHistoricalPricesOfStock', 'id' => $stock->id));?>">Get historical prices from yahoo</a> |
-		<a href="<?php echo $this->url('stock', array('action'=>'easeljs', 'id' => $stock->id));?>">Show chart</a> |
-        <a href="<?php echo $this->url('stock', array('action'=>'delete', 'id' => $stock->id));?>">Delete</a>
+		<a href="<?php echo $this->url('stock', array('action'=>'edit', 'id' => $stock->id));?>">Bearbeiten</a> |
+		<a href="http://de.finance.yahoo.com/q?s=<?php echo $stock->getSymbol(); ?>" target="_blank">Yahoo Infos</a> |
+		<a href="<?php echo $this->url('stock', array('action'=>'getHistoricalPricesOfStock', 'id' => $stock->id));?>">Historische Kurse herunterladen</a> |
+		<a href="<?php echo $this->url('stock', array('action'=>'easeljs', 'id' => $stock->id));?>">Chart anzeigen</a> |
+        <a href="<?php echo $this->url('stock', array('action'=>'delete', 'id' => $stock->id));?>">Löschen</a>
     </td>
 </tr>
 <?php endforeach; ?>

@@ -1,12 +1,7 @@
-<?php
-$title = 'Delete stock';
-$this->headTitle($title);
-?>
-<h1><?php echo $this->escapeHtml($title); ?></h1>
+<h1>Aktie löschen</h1>
 
-<p>Are you sure that you want to delete
-    '<?php echo $this->escapeHtml($stock->symbol); ?>'?
-</p>
+<p>Sind Sie sicher, dass Sie die Aktie mit dem Symbol '<?php echo $this->escapeHtml($stock->symbol); ?>' löschen möchten?</p>
+
 <?php
 $url = $this->url('stock', array(
     'action' => 'delete',
@@ -16,7 +11,7 @@ $url = $this->url('stock', array(
 <form action="<?php echo $url; ?>" method="post">
 <div>
     <input type="hidden" name="id" value="<?php echo $stock->id; ?>" />
-    <input type="submit" name="del" value="Yes" />
-    <input type="submit" name="del" value="No" />
+    <input type="submit" name="del" value="Ja" />
+    <input type="submit" name="del" value="Nein" />
 </div>
 </form>

@@ -3,8 +3,7 @@
     <head>
 		<meta name="robots" content="noindex">
         <meta charset="utf-8">
-        <?php echo $this->headTitle('ZF2 '. $this->translate('Skeleton Application'))->setSeparator(' - ')->setAutoEscape(false) ?>
-
+		<title>Aktienkurse - Fabian Ziebig</title>
         <?php echo $this->headMeta()->appendName('viewport', 'width=device-width, initial-scale=1.0') ?>
 
         <?php echo $this->headLink(array('rel' => 'shortcut icon', 'type' => 'image/vnd.microsoft.icon', 'href' => $this->basePath() . '/img/favicon.ico'))
@@ -19,9 +18,9 @@
     </head>
     <body>
 		<div id="topNavigation">
-			<a href="/">Home</a> |
-			<a href="/stock">Stocks (mongodb)</a> |
-			<a href="/album">Album tutorial (mysql)</a> |
+			<a href="/">Startseite</a> |
+			<a href="/stock">Aktien (mongodb)</a> |
+			<a href="/album">Alben (mysql)</a> |
 			<a href="/stock/github">Github</a>
 		</div>
         <div id="contentContainer">
