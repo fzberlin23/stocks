@@ -6,8 +6,39 @@ function createCandleStickContainer(prices) {
 
 	var candleStickContainer = new createjs.Container();
 
+	// y achse
 	priceLegend(candleStickContainer);
 
+	// x achse
+	var currentDate = null;
+	for (var i=0; i<prices.length; i++) {
+
+		currentDate = new Date(prices[i].date);
+		if (currentDate.getDay() === 1) {
+
+			var g = new createjs.Graphics();
+			g.beginStroke(createjs.Graphics.getRGB(200,200,200));
+			g.setStrokeStyle(1);
+			g.moveTo(0, 0);
+			g.lineTo(0, candleStickContainerHeight + 10);
+
+			// create shape
+			var s = new createjs.Shape(g);
+			s.x = candleStickContainerWidth - (candleWidth * (i + 1)) + (candleWidth / 2);
+			s.x = s.x - ((i + 1) * candleMargin);
+			s.y = 0;
+			candleStickContainer.addChild(s);
+
+			// text einfügen
+			var text = new createjs.Text(currentDate.getDate() + '.' + (currentDate.getMonth() + 1) + '.', '14px Arial', '#000000');
+			text.x = candleStickContainerWidth - (candleWidth * (i + 1)) + (candleWidth / 2);
+			text.x = text.x - ((i + 1) * candleMargin) - 14;
+			text.y = candleStickContainerHeight + 20;
+			candleStickContainer.addChild(text);
+		};
+	}
+
+	// candles
 	for (var i=0; i<prices.length; i++) {
 
 		var obj = createCandleGraphicsObject(prices[i], i);
