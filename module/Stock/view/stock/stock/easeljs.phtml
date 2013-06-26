@@ -1,4 +1,4 @@
-<canvas id="demoCanvas">
+<canvas id="chartCanvas">
 	Das ist ein Test.
 </canvas>
 
@@ -18,9 +18,9 @@ indicators:
 
 <script>
 	// set size of canvas element
-	$("#fabianContainer").css('height', $("#fabianContainer").width() / 2);
-	$("#demoCanvas").attr('width', $("#fabianContainer").width());
-	$("#demoCanvas").attr('height', $("#fabianContainer").height());
+	$("#contentContainer").css('height', $("#contentContainer").width() / 2);
+	$("#chartCanvas").attr('width', $("#contentContainer").width());
+	$("#chartCanvas").attr('height', $("#contentContainer").height());
 
 	$("#monthSelector a").click(function() {
 

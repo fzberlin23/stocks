@@ -1,41 +1,6 @@
 body {
-    padding-top: 0px;
-    padding-bottom: 0px;
-	padding-left: 0px;
-    padding-right: 0px;
-}
-
-.zf-green {
-    color: #68b604;
-}
-
-.btn-success {
-  background-color: #57a900;
-  background-image: -moz-linear-gradient(top, #70d900, #57a900);
-  background-image: -ms-linear-gradient(top, #70d900, #57a900);
-  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#70d900), to(#57a900));
-  background-image: -webkit-linear-gradient(top, #70d900, #57a900);
-  background-image: -o-linear-gradient(top, #70d900, #57a900);
-  background-image: linear-gradient(top, #70d900, #57a900);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#70d900', endColorstr='#57a900', GradientType=0);
-}
-
-.btn-success:hover,
-.btn-success:active,
-.btn-success.active,
-.btn-success.disabled,
-.btn-success[disabled] {
-  background-color: #57a900;
-}
-
-.btn-success:active, .btn-success.active {
-  background-color: #57a900;
-}
-
-div.container a.brand {
-    background: url("../img/zf2-logo.png") no-repeat scroll 0 10px transparent;
-    margin-left: 0;
-    padding: 8px 20px 12px 40px;
+	padding:0;
+	margin:0;
 }
 
 h1 {
@@ -48,13 +13,13 @@ h1 {
 	text-align:center;
 }
 
-#fabianContainer {
+#contentContainer {
 	width: 98%;
 	height: 400px;
 	padding: 10px;
 }
 
-#demoCanvas {
+#chartCanvas {
 	width: 100%;
 	height: 100%;
 	display: block;
@@ -65,10 +30,14 @@ h1 {
 	color: red;
 }
 
+nav {
+	display: inline;
+}
+
 /* Desktop large
 ------------------------- */
 @media (min-width: 1200px) {
-	#fabianContainer {
+	#contentContainer {
 		width: 1000px;
 		height: 400px;
 		padding: 10px;

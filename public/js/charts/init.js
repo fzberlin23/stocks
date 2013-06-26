@@ -20,10 +20,10 @@ var movingAverageContainers = new Array();
 function init() {
 
 	// stage initialisieren
-	stage = new createjs.Stage("demoCanvas");
+	stage = new createjs.Stage("chartCanvas");
 
-	stageWidth = $("#demoCanvas").width();
-	stageHeight = $("#demoCanvas").height();
+	stageWidth = $("#chartCanvas").width();
+	stageHeight = $("#chartCanvas").height();
 
 	candleStickContainerWidth = stageWidth - 200;
 	candleStickContainerHeight = stageHeight - 100;
