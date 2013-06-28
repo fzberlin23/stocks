@@ -68,6 +68,15 @@ function drawPrices(data, textStatus, jqXHR) {
 	}
 	stage.update();
 
+	if (prices.length < 1) {
+		var text = new createjs.Text('Für diese Aktie sind noch keine Kurse in der Datenbank vorhanden.', '13px Arial', '#000000');
+		text.x = 6;
+		text.y = 25;
+		stage.addChild(text);
+		stage.update();
+		return;
+	}
+
 	// add candlestickcontainer
 	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
 	stage.addChild(candleStickContainer);
