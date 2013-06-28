@@ -17,18 +17,30 @@ var days = 20;
 
 var movingAverageContainers = new Array();
 
+function resizeContentOfStage() {
+
+	stageWidth = $("#chartCanvas").width();
+	stageHeight = $("#chartCanvas").height();
+
+	// left
+	candleStickContainerLeft = 80;
+
+	// top
+	candleStickContainerTop = 50;
+
+	// width
+	candleStickContainerWidth = stageWidth - 100;
+
+	// height
+	candleStickContainerHeight = stageHeight - 100;
+}
+
 function init() {
 
 	// stage initialisieren
 	stage = new createjs.Stage("chartCanvas");
 
-	stageWidth = $("#chartCanvas").width();
-	stageHeight = $("#chartCanvas").height();
-
-	candleStickContainerWidth = stageWidth - 200;
-	candleStickContainerHeight = stageHeight - 100;
-	candleStickContainerLeft = 100;
-	candleStickContainerTop = 50;
+	resizeContentOfStage();
 
 	// text einfügen
 	var text = new createjs.Text(stock.symbol, '13px Arial', '#000000');
@@ -40,7 +52,8 @@ function init() {
 	$(window).smartresize(
 		function() {
 			setSizeOfCanvasChart();
-			drawPrices(prices);
+			resizeContentOfStage();
+			drawPrices();
 		}, 200
 	);
 
@@ -55,14 +68,13 @@ function loadPrices(daysToGet) {
         url: "/stock/loadPrices/" + stock.id + "/" + days,
         dataType: "json",
         success: function (data, textStatus, jqXHR) {
-			drawPrices(data.prices);
+			prices = data.prices;
+			drawPrices();
 		}
     });
 }
 
-function drawPrices(pricesToDraw) {
-
-	prices = pricesToDraw;
+function drawPrices() {
 
 	// remove old stuff
 	stage.removeChild(candleStickContainer);
