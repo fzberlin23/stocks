@@ -11,25 +11,33 @@
 	Bitte benutzen Sie einen aktuelleren Browser.
 </canvas>
 
-Zeitraum:
-<nav id="monthSelector">
-	<a href="#" class="activated">1 month</a> |
-	<a href="#">2 months</a> |
-	<a href="#">3 months</a>
-</nav>
+<div id="chartNavigation">
 
-Indikatoren:
-<nav id="smaSelector">
-	<a href="#">Simple moving average (10)</a> |
-	<a href="#">Simple moving average (20)</a> |
-	<a href="#">Simple moving average (30)</a>
-</nav>
+	<div id="chooseChartPeriod">
+		Zeitraum:
+		<nav id="monthSelector">
+			<a href="#" class="activated">1 Monat</a> |
+			<a href="#">2 Monate</a> |
+			<a href="#">3 Monate</a>
+		</nav>
+	</div>
+
+	<div id="chooseChartIndicators">
+		Indikatoren:
+		<nav id="smaSelector">
+			<a href="#">SMA(10)</a> |
+			<a href="#">SMA(20)</a> |
+			<a href="#">SMA(30)</a>
+		</nav>
+	</div>
+</div>
 
 <script>
 	// set size of canvas element
-	$("#contentContainer").css('height', $("#contentContainer").width() / 2);
+	var windowHeight = $(window).height();
 	$("#chartCanvas").attr('width', $("#contentContainer").width());
-	$("#chartCanvas").attr('height', $("#contentContainer").height());
+	$("#chartCanvas").attr('height', windowHeight - 240);
+	$("#chartCanvas").css('height', windowHeight - 240);
 
 	$("#monthSelector a").click(function() {
 
@@ -38,9 +46,9 @@ Indikatoren:
 
 		var days = null;
 		switch ($(this).html()) {
-			case '1 month': days = 20; break;
-			case '2 months': days = 40; break;
-			case '3 months': days = 60; break;
+			case '1 Monat': days = 20; break;
+			case '2 Monate': days = 40; break;
+			case '3 Monate': days = 60; break;
 		}
 		loadPrices(days);
 	});
@@ -49,9 +57,9 @@ Indikatoren:
 
 		var sma = null;
 		switch ($(this).html()) {
-			case 'Simple moving average (10)': sma = 10; break;
-			case 'Simple moving average (20)': sma = 20; break;
-			case 'Simple moving average (30)': sma = 30; break;
+			case 'SMA(10)': sma = 10; break;
+			case 'SMA(20)': sma = 20; break;
+			case 'SMA(30)': sma = 30; break;
 		}
 
 		if ($(this).hasClass('activated')) {

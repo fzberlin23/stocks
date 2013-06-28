@@ -18,16 +18,29 @@ h2 {
 }
 
 #contentContainer {
-	width: 98%;
-	height: 400px;
-	padding: 10px;
+	width: 100%;
+}
+
+#innerContentContainer {
+	padding:10px;
 }
 
 #chartCanvas {
 	width: 100%;
-	height: 100%;
 	display: block;
 	border: 1px solid black;
+}
+
+#chartNavigation {
+	padding-top: 10px;
+}
+
+#chooseChartPeriod {
+	float: left;
+}
+
+#chooseChartIndicators {
+	float: right;
 }
 
 .activated {
@@ -43,23 +56,22 @@ nav {
 	#contentContainer {
 		width: 1000px;
 		height: 400px;
-		padding: 10px;
 		margin-left: auto;
 		margin-right: auto;
-		background-color: red;
+		background-color: #fff3f3;
 	}
 }
 
 /* iPad längs */
 @media (min-width: 769px) and (max-width: 1280px) {
 	#contentContainer {
-		background-color: blue;
+		background-color: #f3f9ff;
 	}
 }
 
 /* iPad hochkant */
 @media (max-width: 768px) {
 	#contentContainer {
-		background-color: green;
+		background-color: #efffee;
 	}
 }
