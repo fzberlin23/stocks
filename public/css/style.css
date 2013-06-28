@@ -38,34 +38,28 @@ nav {
 	display: inline;
 }
 
-/* Desktop large
-------------------------- */
-@media (min-width: 1200px) {
+/* Großer Bildschirm */
+@media (min-width: 1281px) {
 	#contentContainer {
 		width: 1000px;
 		height: 400px;
 		padding: 10px;
 		margin-left: auto;
 		margin-right: auto;
+		background-color: red;
 	}
 }
 
-/* Desktop
-------------------------- */
-@media (max-width: 980px) {
+/* iPad längs */
+@media (min-width: 769px) and (max-width: 1280px) {
+	#contentContainer {
+		background-color: blue;
+	}
 }
 
-/* Tablet to desktop
-------------------------- */
-@media (min-width: 768px) and (max-width: 979px) {
-}
-
-/* Tablet
-------------------------- */
-@media (max-width: 767px) {
-}
-
-/* Landscape phones
-------------------------- */
-@media (max-width: 480px) {
+/* iPad hochkant */
+@media (max-width: 768px) {
+	#contentContainer {
+		background-color: green;
+	}
 }
