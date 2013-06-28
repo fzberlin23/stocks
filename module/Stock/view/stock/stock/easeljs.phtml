@@ -34,10 +34,13 @@
 
 <script>
 	// set size of canvas element
-	var windowHeight = $(window).height();
-	$("#chartCanvas").attr('width', $("#contentContainer").width());
-	$("#chartCanvas").attr('height', windowHeight - 240);
-	$("#chartCanvas").css('height', windowHeight - 240);
+	function setSizeOfCanvasChart() {
+		var windowHeight = $(window).height();
+		$("#chartCanvas").attr('width', $("#contentContainer").width());
+		$("#chartCanvas").attr('height', windowHeight - 240);
+		$("#chartCanvas").css('height', windowHeight - 240);
+	}
+	setSizeOfCanvasChart();
 
 	$("#monthSelector a").click(function() {
 
@@ -78,6 +81,7 @@
 </script>
 
 <script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
+<script src="/js/debounce.js"></script>
 <script src="/js/charts/CandleStickContainer.js"></script>
 <script src="/js/charts/init.js"></script>
 

@@ -58,20 +58,20 @@ nav {
 		height: 400px;
 		margin-left: auto;
 		margin-right: auto;
-		background-color: #fff3f3;
+		/*background-color: #fff3f3;*/
 	}
 }
 
 /* iPad längs */
 @media (min-width: 769px) and (max-width: 1280px) {
 	#contentContainer {
-		background-color: #f3f9ff;
+		/*background-color: #f3f9ff;*/
 	}
 }
 
 /* iPad hochkant */
 @media (max-width: 768px) {
 	#contentContainer {
-		background-color: #efffee;
+		/*background-color: #efffee;*/
 	}
 }

@@ -36,10 +36,13 @@ function init() {
 	text.y = 7;
 	stage.addChild(text);
 
-	// button erstellen
-	// sprite = new Image();
-    // sprite.src = '/img/button.png';
-    // sprite.onload = addButton;
+	// resize event benutzen
+	$(window).smartresize(
+		function() {
+			setSizeOfCanvasChart();
+			drawPrices(prices);
+		}, 200
+	);
 
 	loadPrices(20);
 }
@@ -51,13 +54,15 @@ function loadPrices(daysToGet) {
         crossDomain: false,
         url: "/stock/loadPrices/" + stock.id + "/" + days,
         dataType: "json",
-        success: drawPrices
+        success: function (data, textStatus, jqXHR) {
+			drawPrices(data.prices);
+		}
     });
 }
 
-function drawPrices(data, textStatus, jqXHR) {
+function drawPrices(pricesToDraw) {
 
-	prices = data.prices;
+	prices = pricesToDraw;
 
 	// remove old stuff
 	stage.removeChild(candleStickContainer);
