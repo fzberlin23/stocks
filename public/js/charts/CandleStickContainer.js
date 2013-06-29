@@ -265,8 +265,6 @@ function initialScalingHandler(){
 			candleStickContainer.getChildAt(i).scaleY = initialScaling;
 		}
 
-		// container.scaleX = container.scaleY = initialScaling;
-
 		stage.update();
 	}
 	else {

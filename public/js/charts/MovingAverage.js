@@ -55,7 +55,6 @@ function drawMovingAverage(period, movingAverageData) {
 		s.x = coordinates[i]['x'];
 		s.y = coordinates[i]['y'];
 
-		//candleStickContainer.addChild(s);
 		movingAverageContainer.addChild(s);
 	}
 

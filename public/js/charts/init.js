@@ -1,17 +1,18 @@
 var prices = new Array();
 
+var stage;
 var stageWidth;
 var stageHeight;
+
+var candleStickContainer;
+var initialScaling = 0;
 
 var highest;
 var lowest;
 var onePixelPrice;
+
 var candleWidth;
 var candleMargin = 10;
-
-var stage;
-var candleStickContainer;
-var initialScaling = 0;
 
 var days = 20;
 
