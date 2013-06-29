@@ -1,3 +1,10 @@
+<script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
+<script src="/js/debounce.js"></script>
+<script src="/js/charts/Stage.js"></script>
+<script src="/js/charts/MovingAverage.js"></script>
+<script src="/js/charts/CandleStickContainer.js"></script>
+<script src="/js/charts/init.js"></script>
+
 <h1>Chart für: <?php echo $stock->getSymbol(); ?></h1>
 
 <p>
@@ -16,74 +23,21 @@
 	<div id="chooseChartPeriod">
 		Zeitraum:
 		<nav id="monthSelector">
-			<a href="#" class="activated">1 Monat</a> |
-			<a href="#">2 Monate</a> |
-			<a href="#">3 Monate</a>
+			<a href="javascript:void(null);" class="activated">1 Monat</a> |
+			<a href="javascript:void(null);">2 Monate</a> |
+			<a href="javascript:void(null);">3 Monate</a>
 		</nav>
 	</div>
 
 	<div id="chooseChartIndicators">
 		Indikatoren:
 		<nav id="smaSelector">
-			<a href="#">SMA(10)</a> |
-			<a href="#">SMA(20)</a> |
-			<a href="#">SMA(30)</a>
+			<a href="javascript:void(null);">SMA(10)</a> |
+			<a href="javascript:void(null);">SMA(20)</a> |
+			<a href="javascript:void(null);">SMA(30)</a>
 		</nav>
 	</div>
 </div>
-
-<script>
-	// set size of canvas element
-	function setSizeOfCanvasChart() {
-		var windowHeight = $(window).height();
-		$("#chartCanvas").attr('width', $("#contentContainer").width());
-		$("#chartCanvas").attr('height', windowHeight - 240);
-		$("#chartCanvas").css('height', windowHeight - 240);
-	}
-	setSizeOfCanvasChart();
-
-	$("#monthSelector a").click(function() {
-
-		$(this).parent().children().removeClass('activated');
-		$(this).addClass('activated');
-
-		var days = null;
-		switch ($(this).html()) {
-			case '1 Monat': days = 20; break;
-			case '2 Monate': days = 40; break;
-			case '3 Monate': days = 60; break;
-		}
-		loadPrices(days);
-	});
-
-	$("#smaSelector a").click(function() {
-
-		var sma = null;
-		switch ($(this).html()) {
-			case 'SMA(10)': sma = 10; break;
-			case 'SMA(20)': sma = 20; break;
-			case 'SMA(30)': sma = 30; break;
-		}
-
-		if ($(this).hasClass('activated')) {
-			$(this).removeClass('activated');
-			stage.removeChild(movingAverageContainers[sma]);
-			delete movingAverageContainers[sma];
-		}
-		else {
-			$(this).addClass('activated');
-			var movingAverageData = calculateMovingAverage(sma);
-			movingAverageContainers[sma] = drawMovingAverage(sma, movingAverageData);
-			stage.addChild(movingAverageContainers[sma]);
-		}
-		stage.update();
-	});
-</script>
-
-<script src="/js/EaselJS-release_v0.6.1/lib/easeljs-0.6.1.min.js"></script>
-<script src="/js/debounce.js"></script>
-<script src="/js/charts/CandleStickContainer.js"></script>
-<script src="/js/charts/init.js"></script>
 
 <script>
 	var stock = new Object();

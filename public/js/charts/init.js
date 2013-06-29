@@ -17,30 +17,51 @@ var days = 20;
 
 var movingAverageContainers = new Array();
 
-function resizeContentOfStage() {
-
-	stageWidth = $("#chartCanvas").width();
-	stageHeight = $("#chartCanvas").height();
-
-	// left
-	candleStickContainerLeft = 80;
-
-	// top
-	candleStickContainerTop = 50;
-
-	// width
-	candleStickContainerWidth = stageWidth - 100;
-
-	// height
-	candleStickContainerHeight = stageHeight - 100;
-}
-
 function init() {
+
+	setSizeOfCanvasChart();
+
+	$("#monthSelector a").click(function() {
+
+		$(this).parent().children().removeClass('activated');
+		$(this).addClass('activated');
+
+		var days = null;
+		switch ($(this).html()) {
+			case '1 Monat': days = 20; break;
+			case '2 Monate': days = 40; break;
+			case '3 Monate': days = 60; break;
+		}
+		loadPrices(days);
+	});
+
+	$("#smaSelector a").click(function() {
+
+		var sma = null;
+		switch ($(this).html()) {
+			case 'SMA(10)': sma = 10; break;
+			case 'SMA(20)': sma = 20; break;
+			case 'SMA(30)': sma = 30; break;
+		}
+
+		if ($(this).hasClass('activated')) {
+			$(this).removeClass('activated');
+			stage.removeChild(movingAverageContainers[sma]);
+			delete movingAverageContainers[sma];
+		}
+		else {
+			$(this).addClass('activated');
+			var movingAverageData = calculateMovingAverage(sma);
+			movingAverageContainers[sma] = drawMovingAverage(sma, movingAverageData);
+			stage.addChild(movingAverageContainers[sma]);
+		}
+		stage.update();
+	});
 
 	// stage initialisieren
 	stage = new createjs.Stage("chartCanvas");
 
-	resizeContentOfStage();
+	calculateDimensionsOfStage();
 
 	// text einfügen
 	var text = new createjs.Text(stock.symbol, '13px Arial', '#000000');
@@ -52,8 +73,8 @@ function init() {
 	$(window).smartresize(
 		function() {
 			setSizeOfCanvasChart();
-			resizeContentOfStage();
-			drawPrices();
+			calculateDimensionsOfStage();
+			drawChart();
 		}, 200
 	);
 
@@ -61,6 +82,7 @@ function init() {
 }
 
 function loadPrices(daysToGet) {
+
 	days = daysToGet;
 	$.ajax({
         type: "GET",
@@ -69,112 +91,15 @@ function loadPrices(daysToGet) {
         dataType: "json",
         success: function (data, textStatus, jqXHR) {
 			prices = data.prices;
-			drawPrices();
+			drawChart();
 		}
     });
 }
 
-function drawPrices() {
+function setSizeOfCanvasChart() {
 
-	// remove old stuff
-	stage.removeChild(candleStickContainer);
-	for (i=0; i<movingAverageContainers.length; i++) {
-		if (typeof movingAverageContainers[i] !== 'undefined') {
-			stage.removeChild(movingAverageContainers[i]);
-		}
-	}
-	stage.update();
-
-	if (prices.length < 1) {
-		var text = new createjs.Text('Für diese Aktie sind noch keine Kurse in der Datenbank vorhanden.', '13px Arial', '#000000');
-		text.x = 6;
-		text.y = 25;
-		stage.addChild(text);
-		stage.update();
-		return;
-	}
-
-	// add candlestickcontainer
-	candleStickContainer = createCandleStickContainer(prices.slice(0, days));
-	stage.addChild(candleStickContainer);
-
-	// redraw moving averages if necessary
-	for (i=0; i<movingAverageContainers.length; i++) {
-		if (typeof movingAverageContainers[i] !== 'undefined') {
-			var movingAverageData = calculateMovingAverage(i);
-			movingAverageContainers[i] = drawMovingAverage(i, movingAverageData);
-			stage.addChild(movingAverageContainers[i]);
-		}
-	}
-}
-
-function drawMovingAverage(period, movingAverageData) {
-
-	var color = null;
-	switch (period) {
-		case 10: color = createjs.Graphics.getRGB(0,0,200); break;
-		case 20: color = createjs.Graphics.getRGB(51,153,0); break;
-		case 30: color = createjs.Graphics.getRGB(255,153,0); break;
-	}
-
-	// calculate coordinates
-	var coordinates = new Array();
-	for (var i=0; i<days; i++) {
-		coordinates[i] = new Object();
-		coordinates[i]['x'] = candleStickContainerWidth - (candleWidth * (i + 1)) + (candleWidth / 2);
-		coordinates[i]['x'] = coordinates[i]['x'] - ((i + 1) * candleMargin);
-		coordinates[i]['y'] = calculateTopInPixelsFromPrice(movingAverageData[i].value);
-	}
-
-	var movingAverageContainer = new createjs.Container();
-
-	for (var i=0; i<days; i++) {
-
-		var g = new createjs.Graphics();
-		g.setStrokeStyle(1);
-		g.beginStroke(color);
-		g.beginFill(color);
-		g.drawCircle(0,0,2);
-
-		// create shape
-		var s = new createjs.Shape(g);
-		s.x = coordinates[i]['x'];
-		s.y = coordinates[i]['y'];
-
-		//candleStickContainer.addChild(s);
-		movingAverageContainer.addChild(s);
-	}
-
-	movingAverageContainer.x = candleStickContainerLeft;
-	movingAverageContainer.y = candleStickContainerTop;
-
-	return movingAverageContainer;
-
-	//	g.moveTo(0, 0);
-	//	g.lineTo(100, 100);
-	//	g.bezierCurveTo (0, 50, 50, 50, 100, 100);
-}
-
-function calculateMovingAverage(movingAveragePeriod) {
-
-	// generate moving average of each price
-	var movingAverage = new Array();
-
-	for (var i=0; i<prices.length; i++) {
-
-		if (prices.length - i < movingAveragePeriod) {
-			break;
-		}
-
-		var tmp = 0.00;
-		for (j = i; j < i + movingAveragePeriod; j++) {
-			tmp += prices[j]['close'];
-		}
-
-		movingAverage[i] = new Object();
-		movingAverage[i]['date'] = prices[i]['date'];
-		movingAverage[i]['value'] = Math.round(tmp / movingAveragePeriod * 100) / 100;
-	}
-
-	return movingAverage;
+	var windowHeight = $(window).height();
+	$("#chartCanvas").attr('width', $("#contentContainer").width());
+	$("#chartCanvas").attr('height', windowHeight - 240);
+	$("#chartCanvas").css('height', windowHeight - 240);
 }
